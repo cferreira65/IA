@@ -53,24 +53,26 @@ int main(int argc, char **argv ) {
         return -1;
     }
     // READ A LINE OF INPUT FROM stdin
-    printf("Please enter a state followed by ENTER: ");
-    if( fgets(str, sizeof str, stdin) == NULL ) {
-        printf("Error: empty input line.\n");
-        return 0; 
-    }
+//    printf("Please enter a state followed by ENTER: ");
+//    if( fgets(str, sizeof str, stdin) == NULL ) {
+//        printf("Error: empty input line.\n");
+//        return 0; 
+//    }
+
+    first_goal_state(&state, &b);
 
     // CONVERT THE STRING TO A STATE
-    nchars = read_state(str, &state);
-    if( nchars <= 0 ) {
-        printf("Error: invalid state entered.\n");
-        return 0; 
-    }
+//    nchars = read_state(str, &state);
+//    if( nchars <= 0 ) {
+//        printf("Error: invalid state entered.\n");
+//        return 0; 
+//    }
 
     b = 1 + atoi(argv[1]);
 
-    printf("The state you entered is: ");
-    print_state(stdout, &state);
-    printf("\n");
+//    printf("The state you entered is: ");
+//    print_state(stdout, &state);
+//    printf("\n");
 
     DFS (state, init_history, 0);
 
