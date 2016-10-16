@@ -48,6 +48,10 @@ int main(int argc, char **argv ) {
     ssize_t nchars; 
     state_t state; // state_t is defined by the PSVN API. It is the type used for individual states.
 
+    if (argc != 2){ 
+        printf("ERROR, Please enter: ./[Archive] [Depth]\n");
+        return -1;
+    }
     // READ A LINE OF INPUT FROM stdin
     printf("Please enter a state followed by ENTER: ");
     if( fgets(str, sizeof str, stdin) == NULL ) {
@@ -62,7 +66,7 @@ int main(int argc, char **argv ) {
         return 0; 
     }
 
-    b = 5;
+    b = 1 + atoi(argv[1]);
 
     printf("The state you entered is: ");
     print_state(stdout, &state);
