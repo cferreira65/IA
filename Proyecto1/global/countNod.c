@@ -34,9 +34,6 @@ void DFS (state_t state, int hist, int d ) {
             apply_fwd_rule(ruleid, &state, &child);
             DFS (child, aux, d+1);
         }
-        else {
-            apply_fwd_rule(ruleid, &state, &child);
-        }
 
     }
     //if( childCount == 0 )
