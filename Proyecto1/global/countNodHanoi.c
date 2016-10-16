@@ -48,8 +48,8 @@ int main(int argc, char **argv ) {
     ssize_t nchars; 
     state_t state; // state_t is defined by the PSVN API. It is the type used for individual states.
 
-    if (argc != 3){ 
-        printf("ERROR, Please enter: ./[Archive] [Depth] [NumFact]\n");
+    if (argc != 4){ 
+        printf("ERROR, Please enter: ./[Archive] [Depth] [NumPegs] [NumDisk]\n");
         return -1;
     }
     // READ A LINE OF INPUT FROM stdin
@@ -59,13 +59,17 @@ int main(int argc, char **argv ) {
 //        return 0; 
 //    }
 
-    int j,num,fact;
-    num = atoi(argv[2]);
+    int numPegs,numDisk,fact,k;
+    numPegs = atoi(argv[2]);
+	numDisk = atoi(argv[3]);
 	fact = 1;
-    for(j = 2; j <= num ; j++){
-        fact = fact*j;
+	k = 0;
+	while(k < numDisk){
+    	fact = fact*numPegs;
+		++k;
 	}
-	printf("El factorial es: %d \n", fact);
+
+	printf("La potencia es: %d \n", fact);
 
     first_goal_state(&state, &b);
 
