@@ -26,6 +26,10 @@ psvn2c_abstraction.c:
 	$(CC) $(OPT) ../global/succ.c -include $< -o $@
 	rm -f $*.c
 
+%.countNod: %.c ../global/countNod.c
+	$(CC) $(OPT) ../global/countNod.c -include $< -o $@
+	rm -f $*.c
+
 %.dist: %.c ../global/dist.cpp
 	$(CXX) $(OPT) ../global/dist.cpp -include $< -o $@
 	rm -f $*.c
