@@ -14,7 +14,7 @@ Copyright (C) 2013 by the PSVN Research Group, University of Alberta
 int ns[20];
 int b;
 
-void DFS (state_t state, int d ) {
+void DFS (state_t state, int hist, int d ) {
 
     if (d > b) 
         return;
@@ -23,13 +23,21 @@ void DFS (state_t state, int d ) {
     state_t child;
     ruleid_iterator_t iter; // ruleid_terator_t is the type defined by the PSVN API successor/predecessor iterators.
     int ruleid; // an iterator returns a number identifying a rule
+    int aux;
 
     // LOOP THOUGH THE CHILDREN ONE BY ONE
     init_fwd_iter(&iter, &state);  // initialize the child iterator
     ++ns[d]; 
     while( (ruleid = next_ruleid(&iter)) >= 0 ) {
-        apply_fwd_rule(ruleid, &state, &child);
-        DFS (child, d+1);
+        if (fwd_rule_valid_for_history(hist,ruleid)) {
+            aux = next_fwd_history(hist,ruleid);
+            apply_fwd_rule(ruleid, &state, &child);
+            DFS (child, aux, d+1);
+        }
+        else {
+            apply_fwd_rule(ruleid, &state, &child);
+        }
+
     }
     //if( childCount == 0 )
     //    printf("Your state has no children.\n");
@@ -63,7 +71,7 @@ int main(int argc, char **argv ) {
     print_state(stdout, &state);
     printf("\n");
 
-    DFS (state,0);
+    DFS (state, init_history, 0);
 
     int i;
     i = 0;
