@@ -11,7 +11,7 @@ Copyright (C) 2013 by the PSVN Research Group, University of Alberta
 
 #define  MAX_LINE_LENGTH 999 
 
-int ns[20];
+int ns[25];
 int b;
 
 void DFS (state_t state, int hist, int d ) {
@@ -48,8 +48,8 @@ int main(int argc, char **argv ) {
     ssize_t nchars; 
     state_t state; // state_t is defined by the PSVN API. It is the type used for individual states.
 
-    if (argc != 2){ 
-        printf("ERROR, Please enter: ./[Archive] [Depth]\n");
+    if (argc != 3){ 
+        printf("ERROR, Please enter: ./[Archive] [Depth] [NumFact]\n");
         return -1;
     }
     // READ A LINE OF INPUT FROM stdin
@@ -58,6 +58,14 @@ int main(int argc, char **argv ) {
 //        printf("Error: empty input line.\n");
 //        return 0; 
 //    }
+
+    int j,num,fact;
+    num = atoi(argv[2]);
+	fact = 1;
+    for(j = 2; j <= num ; j++){
+        fact = fact*j;
+	}
+	//printf("El factorial es: %d \n", fact);
 
     first_goal_state(&state, &b);
 
@@ -68,7 +76,7 @@ int main(int argc, char **argv ) {
 //        return 0; 
 //    }
 
-    b = 1 + atoi(argv[1]);
+    b = 2 + atoi(argv[1]);
 
 //    printf("The state you entered is: ");
 //    print_state(stdout, &state);
@@ -76,14 +84,29 @@ int main(int argc, char **argv ) {
 
     DFS (state, init_history, 0);
 
-    int i;
+    int i,superado;
+	float emp;
     i = 0;
+	superado = 0;
+	emp = 0;
 
-    while (i < b) {
-        printf("Number of child at deep %d, %d\n",i,ns[i] );
+	printf("Depth		Nodes			Emp.Branching.Factor\n");
+    while (i < b-1) {
+        //printf("Number of child at deep %d, %d\n",i,ns[i] );		
+		emp = (float)ns[i+1]/(float)ns[i];
+		printf("%d		%d			%f\n",i,ns[i],emp);
+		if((superado == 0) && (fact < ns[i])){
+			superado = i;
+		}
         ++i;
     }
 
+	if (superado == 0){
+		printf("No se ha superado el número de estados.\n");
+	}
+	else{
+		printf("El numero de estados se supera en el nivel: %d \n", superado);
+	}
     return 0;
 
 }
