@@ -34,6 +34,10 @@ psvn2c_abstraction.c:
 	$(CC) $(OPT) ../global/countNodHanoi.c -include $< -o $@
 	rm -f $*.c
 
+%.dfid: %.c ../global/dfid.c
+	$(CC) $(OPT) ../global/dfid.c -include $< -o $@
+	rm -f $*.c
+
 %.dist: %.c ../global/dist.cpp
 	$(CXX) $(OPT) ../global/dist.cpp -include $< -o $@
 	rm -f $*.c
