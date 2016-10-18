@@ -1,14 +1,14 @@
-
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "dfid.h"
 
 using namespace std;
 
 unsigned long int nodes_gen;
 int b;
 
-int dfid (state_t state, int hist, int d, int bound) {
+int Dfid::dfid (state_t state, int hist, int d, int bound) {
 
     if (d > bound) 
         return -1;
@@ -38,7 +38,7 @@ int dfid (state_t state, int hist, int d, int bound) {
     return -1;
 }
 
-int main(int argc, char **argv ) {
+/*int main(int argc, char **argv ) {
 
     ifstream in;
     in.open (argv[2]);
@@ -77,5 +77,5 @@ int main(int argc, char **argv ) {
     in.close();
     out.close();
     return 0;
-}
+}*/
     

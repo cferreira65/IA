@@ -46,6 +46,10 @@ psvn2c_abstraction.c:
 	$(CXX) $(OPT) ../global/dfid.cpp -include $< -o $@
 	rm -f $*.c
 
+%.out: %.c ../global/out.cpp
+	$(CXX) $(OPT) ../global/out.cpp -include $< -o $@
+	rm -f $*.c
+
 abstractor:
 	$(CXX) $(OPT) ../src/abstractor.cpp ../src/psvn.cpp -o $@
 
