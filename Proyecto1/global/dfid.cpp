@@ -1,7 +1,7 @@
-
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <time.h>
 
 using namespace std;
 
@@ -40,42 +40,36 @@ int dfid (state_t state, int hist, int d, int bound) {
 
 int main(int argc, char **argv ) {
 
-    ifstream in;
-    in.open (argv[2]);
-    ofstream out;
-    out.open (argv[3]);
-    string line;
-    char str[512];
-
-    ssize_t nchars; 
-    state_t state;
     int cost;
     int bound;
+    char str[512];
+    state_t state;
+    clock_t t_init, t_end;
+    double time_elap;
+    double gen_per_sec;
 
-    b = 1 + atoi(argv[1]);
+    read_state(argv[1], &state);
+    bound = 0;
+    nodes_gen = 0;
+    t_init = clock();
 
-    out << "grupo, algorithm, domain, instance, cost, generated, time, gen_per_sec\n";
-
-    if (in.is_open()) {
-        while (getline (in,line)) {
-            sprintf(str, "%.200s", line.c_str());
-            read_state(str, &state);
-            bound = 0;
-            nodes_gen = 0;
-            while (true) {
-                cost = dfid (state, init_history, 0, bound);
-                if (cost!=-1 || bound >= b)
-                    break;
-                ++bound;
-
-            }
-            out << "cost " << cost << ", ";
-            out << "generated " << nodes_gen << "\n";
-
+    while (true) {
+        cost = dfid (state, init_history, 0, bound);
+        if (cost!=-1)
+            break;
+        ++bound;
         }
-    }
-    in.close();
-    out.close();
+
+    t_end = clock();
+    time_elap = double(t_end - t_init)/CLOCKS_PER_SEC;
+    gen_per_sec = double(nodes_gen)/time_elap;
+
+    cout << "X, dfid, ";
+    cout << cost << ", ";
+    cout << nodes_gen << ", ";
+    cout << time_elap << ", ";
+    cout << gen_per_sec << "\n";
     return 0;
 }
+
     
