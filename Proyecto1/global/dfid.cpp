@@ -48,16 +48,11 @@ int main(int argc, char **argv ) {
     double time_elap;
     double gen_per_sec;
 
-    
+    read_state(argv[1], &state);
     bound = 0;
     nodes_gen = 0;
     t_init = clock();
 
-    std::ofstream out;
-    out.open(argv[2], std::ios::app);
-    out << "hola";
-    read_state(argv[1], &state);
-    
     while (true) {
         cost = dfid (state, init_history, 0, bound);
         if (cost!=-1)
@@ -69,11 +64,11 @@ int main(int argc, char **argv ) {
     time_elap = double(t_end - t_init)/CLOCKS_PER_SEC;
     gen_per_sec = double(nodes_gen)/time_elap;
 
-    out << "X, dfid, " << argv[2];
-    out << cost << ", ";
-    out << nodes_gen << ", ";
-    out << time_elap << ", ";
-    out << gen_per_sec << "\n";
+    cout << "X, dfid, " << argv[2] << ", \"" << argv[1] << "\", ";
+    cout << cost << ", ";
+    cout << nodes_gen << ", ";
+    cout << time_elap << ", ";
+    cout << gen_per_sec << "\n";
     return 0;
 }
 

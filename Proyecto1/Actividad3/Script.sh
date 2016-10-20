@@ -16,13 +16,13 @@ E="$E.csv"
 echo "grupo, algorithm, domain, instance, cost, generated, time, gen_per_sec" >> $E
 let _i=1
 while read line
-G="$line"
 do 
+    G="$line"
 	if [ \( $A -le $_i \) -a \( $B -ge $_i \) ];then
 		echo -e "$_i ---> $line\n"
-		timeout 1 $C $G $D 
+		timeout 1 $C "$G" $D >> $E
 		if [ $? == 124 ];then
-			echo "X,dfid,$D,\"$line\",na,na,na,na"
+			echo "X, dfid, $D, \"$line\", na, na, na, na" >> $E
 		fi			
 	fi
 	let _i=$_i+1 
