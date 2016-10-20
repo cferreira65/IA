@@ -11,7 +11,7 @@ Copyright (C) 2013 by the PSVN Research Group, University of Alberta
 
 #define  MAX_LINE_LENGTH 999 
 
-int ns[25];
+unsigned long long int ns[25];
 int b;
 
 void DFS (state_t state, int hist, int d ) {
@@ -59,7 +59,8 @@ int main(int argc, char **argv ) {
 //        return 0; 
 //    }
 
-    int numPegs,numDisk,fact,k;
+    int numPegs,numDisk,k;
+	unsigned long long int fact;
     numPegs = atoi(argv[2]);
 	numDisk = atoi(argv[3]);
 	fact = 1;
@@ -69,7 +70,7 @@ int main(int argc, char **argv ) {
 		++k;
 	}
 
-	printf("La potencia es: %d \n", fact);
+	printf("La potencia es: %llu \n", fact);
 
     first_goal_state(&state, &b);
 
@@ -98,7 +99,7 @@ int main(int argc, char **argv ) {
     while (i < b-1) {
         //printf("Number of child at deep %d, %d\n",i,ns[i] );		
 		emp = (float)ns[i+1]/(float)ns[i];
-		printf("%d		%d			%f\n",i,ns[i],emp);
+		printf("%d		%llu			%f\n",i,ns[i],emp);
 		if((superado == 0) && (fact < ns[i])){
 			superado = i;
 		}
