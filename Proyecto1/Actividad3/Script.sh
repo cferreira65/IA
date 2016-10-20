@@ -11,7 +11,7 @@ while read line
 do 
         G="$line"
 	if [ \( $1 -le $_i \) -a \( $2 -ge $_i \) ];then
-		timeout 10 $3 "$G" $4 >> $5
+		timeout 10 $3 "$G" $D >> $5
 		if [ $? == 124 ];then
 			echo "X, dfid, $D, \"$line\", na, na, na, na" >> $5
 		fi			

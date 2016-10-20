@@ -48,9 +48,10 @@ int main(int argc, char **argv ) {
     double time_elap;
     double gen_per_sec;
 
-    read_state(argv[1], &state);
-    bound = 0;
     nodes_gen = 0;
+    read_state(argv[1], &state);
+    ++nodes_gen;
+    bound = 0;
     t_init = clock();
 
     while (true) {
