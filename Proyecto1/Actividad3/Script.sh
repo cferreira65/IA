@@ -1,29 +1,21 @@
 #!/bin/bash
 
-echo "Introduzca la primera instancia a leer(comienza en 1):"
-read A
-echo "Introduzca la ultima instancia a leer(termina en 80):"
-read B
-echo "Introduzca el programa a ejecutar:"
-read C
-C="./$C"
-echo "Introduzca el archivo de instancias a ejecutar:"
-read D
-F="../instances/$D.txt"
-echo "Introduzaca el archivo en donde se va a escribir:"
-read E
-E="$E.csv"
-echo "grupo, algorithm, domain, instance, cost, generated, time, gen_per_sec" >> $E
+if [ $# != 5 ];then
+    echo "./Script <Num_ini> <Num_fin> ./<Program> ../intances/<Arch>.txt <Arch>.csv"
+fi 
+D=$4
+D=${D:13}
+echo "grupo, algorithm, domain, instance, cost, generated, time, gen_per_sec" >> $5
 let _i=1
 while read line
 do 
-    G="$line"
-	if [ \( $A -le $_i \) -a \( $B -ge $_i \) ];then
-		echo -e "$_i ---> $line\n"
-		timeout 1 $C "$G" $D >> $E
+        G="$line"
+	if [ \( $1 -le $_i \) -a \( $2 -ge $_i \) ];then
+		timeout 10 $3 "$G" $4 >> $5
 		if [ $? == 124 ];then
-			echo "X, dfid, $D, \"$line\", na, na, na, na" >> $E
+			echo "X, dfid, $D, \"$line\", na, na, na, na" >> $5
 		fi			
 	fi
 	let _i=$_i+1 
-done < $F
+done < $4
+
