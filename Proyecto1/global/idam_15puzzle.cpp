@@ -10,51 +10,51 @@ unsigned long int nodes_gen;
 
 int manhattan (state_t state){
 
-	char stateA[100];
-	sprint_state(stateA,100,&state);
-	string vals(stateA);
-	std :: istringstream iss(vals);
+    char stateA[100];
+    sprint_state(stateA,100,&state);
+    string vals(stateA);
+    std :: istringstream iss(vals);
     string c;
-	iss >> c;
-	int first;
-	int i =0;
-	int h = 0;
+    iss >> c;
+    int first;
+    int i =0;
+    int h = 0;
 
-	while (i < 16){
+    while (i < 16){
 
-		if (c == "B"){
-			
-			if (i == 15) break;
-			iss >> c;
-			i++;
-			continue;
+        if (c == "B"){
+            
+            if (i == 15) break;
+            iss >> c;
+            i++;
+            continue;
 
-		}
+        }
 
-		first = atoi(c.c_str());
-		int row1 = first/4;
-		int col1 = first%4;
-		int row2 = i/4;
-		int col2 = i%4;
-		h += abs(row1 - row2) + abs(col1 - col2);
-		iss >> c;
-		i++;
+        first = atoi(c.c_str());
+        int row1 = first/4;
+        int col1 = first%4;
+        int row2 = i/4;
+        int col2 = i%4;
+        h += abs(row1 - row2) + abs(col1 - col2);
+        iss >> c;
+        i++;
 
-	}
+    }
 
-	return h;
+    return h;
 }
 
 int ida (state_t state, int hist, int d, int bound){
 
-	if (is_goal(&state))
+    if (is_goal(&state))
         return d;
 
     int f = d + manhattan(state);
     if (f > bound)
-    	return -f;
+        return -f;
 
-	// VARIABLES FOR ITERATING THROUGH state's SUCCESSORS
+    // VARIABLES FOR ITERATING THROUGH state's SUCCESSORS
     state_t child;
     ruleid_iterator_t iter; // ruleid_terator_t is the type defined by the PSVN API successor/predecessor iterators.
     int ruleid; // an iterator returns a number identifying a rule
@@ -64,16 +64,16 @@ int ida (state_t state, int hist, int d, int bound){
     // LOOP THOUGH THE CHILDREN ONE BY ONE
     init_fwd_iter(&iter, &state);  // initialize the child iterator
     while ( (ruleid = next_ruleid(&iter)) >= 0 ){
-    	if (fwd_rule_valid_for_history(hist,ruleid)){
-    		
-    		aux = next_fwd_history(hist,ruleid);
+        if (fwd_rule_valid_for_history(hist,ruleid)){
+            
+            aux = next_fwd_history(hist,ruleid);
             apply_fwd_rule(ruleid, &state, &child);
             ++nodes_gen; 
             res = ida(child, aux, d+1, bound);
             if (res != -1)
                 return res;
 
-    	}
+        }
 
     }
     return -1

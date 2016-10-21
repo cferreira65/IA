@@ -18,44 +18,44 @@ unsigned long int nodes_gen;
 
 int manhattan (state_t state){
 
-	char stateA[100];
-	sprint_state(stateA,100,&state);
-	string vals(stateA);
-	std :: istringstream iss(vals);
+    char stateA[100];
+    sprint_state(stateA,100,&state);
+    string vals(stateA);
+    std :: istringstream iss(vals);
     string c;
-	iss >> c;
-	int first;
-	int i =0;
-	int h = 0;
+    iss >> c;
+    int first;
+    int i = 0;
+    int h = 0;
 
-	while (i < 16){
+    while (i < 16){
 
-		if (c == "B"){
-			
-			if (i == 15) break;
-			iss >> c;
-			i++;
-			continue;
+        if (c == "B"){
+            
+            if (i == 15) break;
+            iss >> c;
+            i++;
+            continue;
 
-		}
+        }
 
-		first = atoi(c.c_str());
-		int row1 = first/4;
-		int col1 = first%4;
-		int row2 = i/4;
-		int col2 = i%4;
-		h += abs(row1 - row2) + abs(col1 - col2);
-		iss >> c;
-		i++;
+        first = atoi(c.c_str());
+        int row1 = first/4;
+        int col1 = first%4;
+        int row2 = i/4;
+        int col2 = i%4;
+        h += abs(row1 - row2) + abs(col1 - col2);
+        iss >> c;
+        i++;
 
-	}
+    }
 
-	return h;
+    return h;
 }
 
 void aStar_expand (node ex, PriorityQueue<node> &q){
 
-	// state_t child;
+    // state_t child;
     ruleid_iterator_t iter; // ruleid_terator_t is the type defined by the PSVN API successor/predecessor iterators.
     int ruleid; // an iterator returns a number identifying a rule
 
@@ -64,23 +64,23 @@ void aStar_expand (node ex, PriorityQueue<node> &q){
 
    while ( (ruleid = next_ruleid(&iter)) >= 0 ){
 
-   		if (fwd_rule_valid_for_history(hist,ruleid)){
+        if (fwd_rule_valid_for_history(hist,ruleid)){
 
-   			node child;
-   			child.hist = next_fwd_history(ex.hist, ruleid);
-   			apply_fwd_rule(ruleid, &ex.state, &child.state);
-   			child.d = ex.d + 1;
-   			++nodes_gen;
-   			f = child.d + manhattan(child.state);
-   			q.Add(f, f, child);
+            node child;
+            child.hist = next_fwd_history(ex.hist, ruleid);
+            apply_fwd_rule(ruleid, &ex.state, &child.state);
+            child.d = ex.d + 1;
+            ++nodes_gen;
+            f = child.d + manhattan(child.state);
+            q.Add(f, f, child);
 
-   		}
+        }
    }
 }
 
 int aStar (state_t state, int hist, int d){
 
-	PriorityQueue<node> q;
+    PriorityQueue<node> q;
     int f = d + manhattan(state);
     node expand;
     state_t child;
@@ -89,12 +89,12 @@ int aStar (state_t state, int hist, int d){
 
     while(!q.Empty()){
 
-    	expand = q.Top();
-    	q.Pop();
+        expand = q.Top();
+        q.Pop();
 
-    	if (is_goal(&expand.state))
+        if (is_goal(&expand.state))
         return expand.d;
-    	aStar_expand(expand, q);
+        aStar_expand(expand, q);
 
     }
 
