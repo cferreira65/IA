@@ -21,13 +21,12 @@ int manhattan (state_t state){
     int first;
     int i = 0;
     int h = 0;
-    stringstream c;
+    string c;
 
     while (i < 16){
 
-        c << state.vars[i];
-        string str = c.str();
-        if ( str == "B"){
+        c = state.vars[i];
+        if ( c == "B"){
             
             if (i == 15) break;
             i++;
@@ -59,7 +58,7 @@ void aStar_expand (node ex, PriorityQueue<node> &q){
 
    while ( (ruleid = next_ruleid(&iter)) >= 0 ){
 
-        if (fwd_rule_valid_for_history(hist,ruleid)){
+        if (fwd_rule_valid_for_history(ex.hist,ruleid)){
 
             node child;
             child.hist = next_fwd_history(ex.hist, ruleid);
