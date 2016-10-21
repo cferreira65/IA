@@ -18,34 +18,29 @@ unsigned long int nodes_gen;
 
 int manhattan (state_t state){
 
-    char stateA[100];
-    sprint_state(stateA,100,&state);
-    string vals(stateA);
-    std :: istringstream iss(vals);
-    string c;
-    iss >> c;
     int first;
     int i = 0;
     int h = 0;
+    stringstream c;
 
     while (i < 16){
 
-        if (c == "B"){
+        c << state.vars[i];
+        string str = c.str();
+        if ( str == "B"){
             
             if (i == 15) break;
-            iss >> c;
             i++;
             continue;
 
         }
 
-        first = atoi(c.c_str());
+        first = state.vars[i];
         int row1 = first/4;
         int col1 = first%4;
         int row2 = i/4;
         int col2 = i%4;
         h += abs(row1 - row2) + abs(col1 - col2);
-        iss >> c;
         i++;
 
     }
@@ -84,7 +79,7 @@ int aStar (state_t state, int hist, int d){
     int f = d + manhattan(state);
     node expand;
     state_t child;
-
+    printf("%d\n", f);
     q.Add(f, f, expand);
 
     while(!q.Empty()){
@@ -93,7 +88,7 @@ int aStar (state_t state, int hist, int d){
         q.Pop();
 
         if (is_goal(&expand.state))
-        return expand.d;
+            return expand.d;
         aStar_expand(expand, q);
 
     }
