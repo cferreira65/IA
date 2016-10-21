@@ -77,7 +77,7 @@ int main(int argc, char **argv ) {
 //        return 0; 
 //    }
 
-    b = 2 + atoi(argv[1]);
+    b = atoi(argv[1]);
 
 //    printf("The state you entered is: ");
 //    print_state(stdout, &state);
@@ -92,7 +92,7 @@ int main(int argc, char **argv ) {
 	emp = 0;
 
 	printf("Depth		Nodes			Emp.Branching.Factor\n");
-    while (i < b-1) {
+    while (i < b+1) {
         //printf("Number of child at deep %d, %d\n",i,ns[i] );		
 		emp = (float)ns[i+1]/(float)ns[i];
 		printf("%d		%llu			%f\n",i,ns[i],emp);
