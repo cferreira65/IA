@@ -5,7 +5,7 @@
 CC = gcc
 CXX = g++
 OPT = -g -Wall -O3 -Wno-unused-function -Wno-unused-variable
-PSVNOPT = --state_map --backward_moves --fwd_history_len=2 --bwd_history_len=1
+PSVNOPT = --state_map --backward_moves --fwd_history_len=0 --bwd_history_len=0
 
 psvn2c_core.c:
 	cp ../src/psvn2c_core.c ./psvn2c_core.c
@@ -34,6 +34,10 @@ psvn2c_abstraction.c:
 	$(CC) $(OPT) ../global/countNodHanoi.c -include $< -o $@
 	rm -f $*.c
 
+%.dfid: %.c ../global/dfid.c
+	$(CC) $(OPT) ../global/dfid.c -include $< -o $@
+	rm -f $*.c
+
 %.dist: %.c ../global/dist.cpp
 	$(CXX) $(OPT) ../global/dist.cpp -include $< -o $@
 	rm -f $*.c
@@ -42,12 +46,8 @@ psvn2c_abstraction.c:
 	$(CXX) $(OPT) ../global/distSummary.cpp -include $< -o $@
 	rm -f $*.c
 
-%.dfid: %.c ../global/dfid.cpp
-	$(CXX) $(OPT) ../global/dfid.cpp -include $< -o $@
-	rm -f $*.c
-
-%.idam_15puzzle: %.c ../global/idam_15puzzle.cpp
-	$(CXX) $(OPT) ../global/idam_15puzzle.cpp -include $< -o $@
+%.ida_pancake: %.c ../global/ida_pancake.cpp
+	$(CXX) $(OPT) ../global/ida_pancake.cpp -include $< -o $@
 	rm -f $*.c
 
 abstractor:
