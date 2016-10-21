@@ -1,0 +1,10 @@
+El factorial es: 10611558092380307456 
+Depth		Nodes			Emp.Branching.Factor
+0		1			23.000000
+1		23			22.000000
+2		506			21.998024
+3		11131			21.998024
+4		244860			21.998027
+5		5386437			21.998028
+6		118490988			0.000000
+No se ha superado el número de estados.
