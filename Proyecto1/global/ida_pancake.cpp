@@ -7,7 +7,7 @@
 using namespace std;
 
 unsigned long long int nodes_gen;
-
+unsigned long long int lqs;
 
 int gap (state_t state){
 
@@ -18,7 +18,6 @@ int gap (state_t state){
     int fst;
     int snd;
     iss >> fst;
-    int first;
     int i = 0;
     int h = 0;
 
@@ -42,6 +41,14 @@ std::pair<int,int> ida (state_t state, int hist, int d, int bound){
 
     std::pair<int,int> node;
 
+    // VARIABLES FOR ITERATING THROUGH state's SUCCESSORS
+    state_t child;
+    ruleid_iterator_t iter; // ruleid_terator_t is the type defined by the PSVN API successor/predecessor iterators.
+    int ruleid; // an iterator returns a number identifying a rule
+    int aux;
+    std::pair<int,int> res;
+    int t;
+
     int f = d + gap(state);
     if (f > bound){
         node.first = -1;
@@ -54,15 +61,7 @@ std::pair<int,int> ida (state_t state, int hist, int d, int bound){
         node.second = d;
         return node;
     }
-    
 
-    // VARIABLES FOR ITERATING THROUGH state's SUCCESSORS
-    state_t child;
-    ruleid_iterator_t iter; // ruleid_terator_t is the type defined by the PSVN API successor/predecessor iterators.
-    int ruleid; // an iterator returns a number identifying a rule
-    int aux;
-    std::pair<int,int> res;
-    int t;
     t = 10000000;
 
     // LOOP THOUGH THE CHILDREN ONE BY ONE
@@ -99,12 +98,15 @@ int main(int argc, char **argv ) {
     double gen_per_sec;
     int h,
 
+    lqs = 0;
     nodes_gen = 0;
     read_state(argv[1], &state);
     ++nodes_gen;
     bound = gap(state);
     h = bound;
     t_init = clock();
+
+    ++nodes_gen;
 
     while (true) {
         cost = ida (state, init_history, 0, bound);
