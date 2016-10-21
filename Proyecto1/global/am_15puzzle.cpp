@@ -26,20 +26,16 @@ int manhattan (state_t state){
     while (i < 16){
 
         c = state.vars[i];
-        if ( c == "B"){
+        if ( c != "B"){
             
-            if (i == 15) break;
-            i++;
-            continue;
+            first = state.vars[i];
+            int row1 = first/4;
+            int col1 = first%4;
+            int row2 = i/4;
+            int col2 = i%4;
+            h += abs(row1 - row2) + abs(col1 - col2);
 
         }
-
-        first = state.vars[i];
-        int row1 = first/4;
-        int col1 = first%4;
-        int row2 = i/4;
-        int col2 = i%4;
-        h += abs(row1 - row2) + abs(col1 - col2);
         i++;
 
     }
