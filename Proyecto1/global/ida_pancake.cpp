@@ -11,25 +11,13 @@ unsigned long long int lqs;
 
 int gap (state_t state){
 
-    char stateA[100];
-    sprint_state(stateA,100,&state);
-    string vals(stateA);
-    std :: istringstream iss(vals);
-    int fst;
-    int snd;
-    iss >> fst;
     int i = 0;
     int h = 0;
 
     while (i < 27){
 
-        iss >> snd;
-        if ( abs(fst - snd) != 1 ){
-            
+        if ( abs(state.vars[i] - state.vars[i+1]) != 1 )
             h++;
-
-        }
-        fst = snd;
         i++;
 
     }
