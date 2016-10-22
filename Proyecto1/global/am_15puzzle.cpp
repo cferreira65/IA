@@ -10,7 +10,7 @@ using namespace std;
 struct node {
     state_t state;
     int d;
-    int hist;
+//    int hist;
 };
 
 unsigned long int nodes_gen;
@@ -21,12 +21,12 @@ int manhattan (state_t state){
     int first;
     int i = 0;
     int h = 0;
-    string c;
+    int c;
 
     while (i < 16){
 
         c = state.vars[i];
-        if ( c != "B"){
+        if ( c != 0){
             
             first = state.vars[i];
             int row1 = first/4;
@@ -34,7 +34,6 @@ int manhattan (state_t state){
             int row2 = i/4;
             int col2 = i%4;
             h += abs(row1 - row2) + abs(col1 - col2);
-
         }
         i++;
 
@@ -43,7 +42,7 @@ int manhattan (state_t state){
     return h;
 }
 
-void aStar_expand (node ex, PriorityQueue<node> &q){
+/* void aStar_expand (node ex, PriorityQueue<node> &q){
 
     // state_t child;
     ruleid_iterator_t iter; // ruleid_terator_t is the type defined by the PSVN API successor/predecessor iterators.
@@ -66,30 +65,60 @@ void aStar_expand (node ex, PriorityQueue<node> &q){
 
         }
    }
-}
+} */
 
-int aStar (state_t state, int hist, int d){
+int aStar (state_t state){
 
+    ruleid_iterator_t iter; // ruleid_terator_t is the type defined by the PSVN API successor/predecessor iterators.
+    int ruleid; // an iterator returns a number identifying a rule
+    state_map_t *map = new_state_map();
+    state_map_t *hist_map = new_state_map();
     PriorityQueue<node> q;
-    int f = d + manhattan(state);
-    node expand;
+    node n;
+    node child_n;
+    n.state = state;
+    n.d = 0;
+    int h0 = manhattan(state);
+    state_map_add(map, &state, h0);
+    state_map_add(hist_map, &state, init_history);
+    q.Add(0, 0, n);
+    //int f = d + manhattan(state);
+    //node expand;
     state_t child;
-    printf("%d\n", f);
-    q.Add(f, f, expand);
+    int aux;
+
 
     while(!q.Empty()){
 
-        expand = q.Top();
+        n = q.Top();
+        int cp = q.CurrentPriority();
         q.Pop();
+        int *g = state_map_get(map,&n.state);
+        int *hist = state_map_get(hist_map,&n.state);
+        print_state(stdout, &n.state);
 
-        if (is_goal(&expand.state))
-            return expand.d;
-        aStar_expand(expand, q);
+        state_map_add(map, &n.state, n.d);
+        if (is_goal(&n.state))
+            return n.d;
 
+        init_fwd_iter(&iter, &n.state);  // initialize the child iterator
+        while ( (ruleid = next_ruleid(&iter)) >= 0 ){
+            if (fwd_rule_valid_for_history(*hist,ruleid)){
+                    
+                aux = next_fwd_history(*hist,ruleid);
+                apply_fwd_rule(ruleid, &n.state, &child);
+                ++nodes_gen;
+                child_n.state = child;
+                child_n.d = n.d + 1;
+                state_map_add(map,&child_n.state,child_n.d);
+                state_map_add(hist_map,&child_n.state,aux);
+                int c = child_n.d + manhattan(child_n.state);
+                q.Add(c, c, child_n);
+            }
+        }
     }
 
-    return 0;
-
+    return -1;
 }
 
 int main(int argc, char **argv ) {
@@ -106,7 +135,7 @@ int main(int argc, char **argv ) {
     ++nodes_gen;
     t_init = clock();
 
-    cost = aStar(state, init_history, 0);
+    cost = aStar(state);
 
     t_end = clock();
     time_elap = double(t_end - t_init)/CLOCKS_PER_SEC;
@@ -119,4 +148,5 @@ int main(int argc, char **argv ) {
     cout << time_elap << ", ";
     cout << gen_per_sec << "\n";
     return 0;
+
 }
