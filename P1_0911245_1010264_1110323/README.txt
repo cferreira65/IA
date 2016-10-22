@@ -12,7 +12,8 @@
 -------------------------------------------------------------------------------
 
 --- Actividad 1 y 2 ---
-    1) Ubicarse en la carpeta Proyecto1/Actividad1y2
+
+    1) Ubicarse en la carpeta /Actividad1y2
     2) Se compila con los siguientes comandos:
         make 11puzzle.countNod
         make 24PancakePuzzle.countNod
@@ -30,3 +31,31 @@
         ./26TopSpin.countNod 7 26
         ./tower14_4.countNodHanoi 12 4 14
         ./tower16_4.countNodHanoi 12 4 16
+
+--- Actividad 3 ---
+
+    1) Ubicarse en la carpeta /Actividad3
+    2) Se compila con los siguientes comandos:
+        make 11puzzle.dfid
+        make pancake16.dfid
+        make topSpin.dfid
+        make tower14_4.dfid
+    3) Se ejecutan de la siguiente manera:
+        [lineaInicial] [lineaFinal] ./11puzzle.dfid [archivoEntrada] [archivoSalida] 
+        [lineaInicial] [lineaFinal] ./pancake16.dfid [archivoEntrada] [archivoSalida] 
+        [lineaInicial] [lineaFinal] ./topSpin.dfid [archivoEntrada] [archivoSalida] 
+        [lineaInicial] [lineaFinal] ./tower14_4.dfid [archivoEntrada] [archivoSalida] 
+
+--- Actividad 4 ---
+
+    1) Ubicarse en la carpeta /Actividad4
+    2) Se compila con los siguientes comandos:
+        make [nombrePsvn].[programa en /global]
+    3) Se ejecutan de la siguiente manera:
+        [lineaInicial] [lineaFinal] ./[nombrePrograma] [archivoEntrada] [archivoSalida] [algoritmo] [heuristica]
+
+    NOTA: Las corredas de A* dan  segmentation fault
+
+Los resultados de las corridas de las actividade se encuentran en las carpetas correspondientes.
+
+-------------------------------------------------------------------------------
