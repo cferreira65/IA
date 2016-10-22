@@ -54,6 +54,10 @@ psvn2c_abstraction.c:
 	$(CXX) $(OPT) ../global/ida_pancake.cpp -include $< -o $@
 	rm -f $*.c
 
+%.a_pancake: %.c ../global/a_pancake.cpp
+	$(CXX) $(OPT) ../global/a_pancake.cpp -include $< -o $@
+	rm -f $*.c
+
 %.am_15puzzle: %.c ../global/am_15puzzle.cpp
 	$(CXX) $(OPT) ../global/am_15puzzle.cpp -include $< -o $@
 	rm -f $*.c
