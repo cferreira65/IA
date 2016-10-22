@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $# != 7 ];then
-    echo "./Script <Num_ini> <Num_fin> ./<Program> ../intances/<Arch>.txt <Arch>.csv <Algorithm> <Heurist>"
+    echo "./Script <Num_ini> <Num_fin> ./<Program> ../instances/<Arch>.txt <Arch>.csv <Algorithm> <Heurist>"
 else
     D=$4
     D=${D:13}

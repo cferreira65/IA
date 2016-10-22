@@ -10,7 +10,6 @@ using namespace std;
 struct node {
     state_t state;
     int d;
-//    int hist;
 };
 
 unsigned long int nodes_gen;
@@ -42,31 +41,6 @@ int manhattan (state_t state){
     return h;
 }
 
-/* void aStar_expand (node ex, PriorityQueue<node> &q){
-
-    // state_t child;
-    ruleid_iterator_t iter; // ruleid_terator_t is the type defined by the PSVN API successor/predecessor iterators.
-    int ruleid; // an iterator returns a number identifying a rule
-
-    init_fwd_iter(&iter, &ex.state);
-    int f;
-
-   while ( (ruleid = next_ruleid(&iter)) >= 0 ){
-
-        if (fwd_rule_valid_for_history(ex.hist,ruleid)){
-
-            node child;
-            child.hist = next_fwd_history(ex.hist, ruleid);
-            apply_fwd_rule(ruleid, &ex.state, &child.state);
-            child.d = ex.d + 1;
-            ++nodes_gen;
-            f = child.d + manhattan(child.state);
-            q.Add(f, f, child);
-
-        }
-   }
-} */
-
 int aStar (state_t state){
 
     ruleid_iterator_t iter; // ruleid_terator_t is the type defined by the PSVN API successor/predecessor iterators.
@@ -82,8 +56,6 @@ int aStar (state_t state){
     state_map_add(map, &state, h0);
     state_map_add(hist_map, &state, init_history);
     q.Add(0, 0, n);
-    //int f = d + manhattan(state);
-    //node expand;
     state_t child;
     int aux;
 
