@@ -1,0 +1,21 @@
+grupo, algorithm, domain, instance, cost, generated, time, gen_per_sec
+X, dfid, 11puzzle.txt, "4 2 5 8 6 3 7 11 B 9 1 10", na, na, na, na
+X, dfid, 11puzzle.txt, "3 2 7 6 B 4 5 10 8 9 11 1", na, na, na, na
+X, dfid, 11puzzle.txt, "8 1 2 3 B 4 10 5 7 6 9 11", na, na, na, na
+X, dfid, 11puzzle.txt, "1 2 5 6 3 4 7 10 8 9 B 11", 26, 287948828, 9.13482, 3.15221e+07
+X, dfid, 11puzzle.txt, "1 4 2 3 B 5 10 7 8 6 9 11", na, na, na, na
+X, dfid, 11puzzle.txt, "4 3 2 6 B 8 5 1 7 9 10 11", na, na, na, na
+X, dfid, 11puzzle.txt, "4 2 1 3 B 10 6 5 11 7 9 8", na, na, na, na
+X, dfid, 11puzzle.txt, "3 1 2 4 7 5 B 6 8 9 10 11", na, na, na, na
+X, dfid, 11puzzle.txt, "7 6 4 10 1 2 9 3 5 11 B 8", na, na, na, na
+X, dfid, 11puzzle.txt, "1 2 B 3 6 5 7 8 11 4 9 10", na, na, na, na
+X, dfid, 11puzzle.txt, "3 1 2 6 B 5 10 4 11 8 9 7", na, na, na, na
+X, dfid, 11puzzle.txt, "3 2 B 6 1 5 10 4 8 7 9 11", 30, 3402257548, 151.591, 2.24436e+07
+X, dfid, 11puzzle.txt, "3 2 5 4 1 8 6 7 11 9 B 10", na, na, na, na
+X, dfid, 11puzzle.txt, "5 8 2 3 6 1 4 11 B 9 7 10", 20, 3328166, 0.14915, 2.23142e+07
+X, dfid, 11puzzle.txt, "5 6 1 3 B 8 9 2 4 10 7 11", na, na, na, na
+X, dfid, 11puzzle.txt, "5 3 8 1 B 11 6 2 4 9 7 10", na, na, na, na
+X, dfid, 11puzzle.txt, "1 4 2 3 7 5 6 10 8 9 B 11", 28, 728866030, 32.4024, 2.24942e+07
+X, dfid, 11puzzle.txt, "4 3 2 1 7 5 B 11 10 6 9 8", na, na, na, na
+X, dfid, 11puzzle.txt, "3 1 2 7 6 8 5 4 11 9 B 10", na, na, na, na
+X, dfid, 11puzzle.txt, "1 2 B 3 4 5 6 7 8 9 10 11", 2, 15, 2e-06, 7.5e+06

@@ -21,6 +21,8 @@ int gap (state_t state){
         i++;
 
     }
+    if (state.vars[i] != 27)
+        h++;
 
     return h;
 }
