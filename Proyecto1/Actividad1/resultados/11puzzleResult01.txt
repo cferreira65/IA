@@ -22,3 +22,4 @@ Depth		Nodes			Emp.Branching.Factor
 19		348899			1.932766
 20		674340			0.000000
 No se ha superado el número de estados.
+
