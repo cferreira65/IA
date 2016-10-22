@@ -109,7 +109,7 @@ int main(int argc, char **argv ) {
     time_elap = double(t_end - t_init)/CLOCKS_PER_SEC;
     gen_per_sec = double(nodes_gen)/time_elap;
 
-    cout << "X, ida*, manhattan, " << argv[2] << ", \"" << argv[1] << "\", ";
+    cout << "X, ida, gap, " << argv[2] << ", \"" << argv[1] << "\", ";
     cout << cost.second << ", ";
     cout << h << ", ";
     cout << nodes_gen << ", ";
