@@ -14,7 +14,7 @@ else
 	if [ \( $1 -le $_i \) -a \( $2 -ge $_i \) ];then
 		timeout 5m $3 "$G" $D >> $5
 		if [ $? == 124 ];then
-			echo "X, $6, $7, $D, \"$line\", na, na, na, na" >> $5 # -----> agregar algoritmo y heuristica utilizada 
+			echo "X, $6, $7, $D, \"$line\", na, na, na, na, na" >> $5 # -----> agregar algoritmo y heuristica utilizada 
 		fi			
 	fi
 	let _i=$_i+1 
