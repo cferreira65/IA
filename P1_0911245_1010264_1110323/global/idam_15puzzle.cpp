@@ -14,12 +14,12 @@ int manhattan (state_t state){
     int first;
     int i = 0;
     int h = 0;
-    string c;
+    int c;
 
     while (i < 16){
 
         c = state.vars[i];
-        if ( c != "B"){
+        if ( c != 0){
             
             first = state.vars[i];
             int row1 = first/4;

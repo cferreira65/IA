@@ -36,9 +36,6 @@ void DFS (state_t state, int hist, int d ) {
         }
 
     }
-    //if( childCount == 0 )
-    //    printf("Your state has no children.\n");
-
 }
 
 int main(int argc, char **argv ) {
@@ -52,12 +49,6 @@ int main(int argc, char **argv ) {
         printf("ERROR, Please enter: ./[Archive] [Depth] [NumFact]\n");
         return -1;
     }
-    // READ A LINE OF INPUT FROM stdin
-//    printf("Please enter a state followed by ENTER: ");
-//    if( fgets(str, sizeof str, stdin) == NULL ) {
-//        printf("Error: empty input line.\n");
-//        return 0; 
-//    }
 
     int j,num;
 	unsigned long long int fact;
@@ -70,18 +61,7 @@ int main(int argc, char **argv ) {
 
     first_goal_state(&state, &b);
 
-    // CONVERT THE STRING TO A STATE
-//    nchars = read_state(str, &state);
-//    if( nchars <= 0 ) {
-//        printf("Error: invalid state entered.\n");
-//        return 0; 
-//    }
-
     b = atoi(argv[1]);
-
-//    printf("The state you entered is: ");
-//    print_state(stdout, &state);
-//    printf("\n");
 
     DFS (state, init_history, 0);
 
@@ -93,7 +73,7 @@ int main(int argc, char **argv ) {
 
 	printf("Depth		Nodes			Emp.Branching.Factor\n");
     while (i < b+1) {
-        //printf("Number of child at deep %d, %d\n",i,ns[i] );		
+	
 		emp = (float)ns[i+1]/(float)ns[i];
 		printf("%d		%llu			%f\n",i,ns[i],emp);
 		if((superado == 0) && (fact < ns[i])){

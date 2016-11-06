@@ -15,28 +15,20 @@ struct node {
 unsigned long int nodes_gen;
 
 
-int manhattan (state_t state){
+int gap (state_t state){
 
-    int first;
     int i = 0;
     int h = 0;
-    int c;
 
-    while (i < 16){
+    while (i < 27){
 
-        c = state.vars[i];
-        if ( c != 0){
-            
-            first = state.vars[i];
-            int row1 = first/4;
-            int col1 = first%4;
-            int row2 = i/4;
-            int col2 = i%4;
-            h += abs(row1 - row2) + abs(col1 - col2);
-        }
+        if ( abs(state.vars[i] - state.vars[i+1]) != 1 )
+            h++;
         i++;
 
     }
+    if (state.vars[i] != 27)
+        h++;
 
     return h;
 }
@@ -52,10 +44,12 @@ int aStar (state_t state){
     node child_n;
     n.state = state;
     n.d = 0;
-    int h0 = manhattan(state);
+    int h0 = gap(state);
     state_map_add(map, &state, h0);
     state_map_add(hist_map, &state, init_history);
     q.Add(0, 0, n);
+    //int f = d + manhattan(state);
+    //node expand;
     state_t child;
     int aux;
 
@@ -84,7 +78,7 @@ int aStar (state_t state){
                 child_n.d = n.d + 1;
                 state_map_add(map,&child_n.state,child_n.d);
                 state_map_add(hist_map,&child_n.state,aux);
-                int c = child_n.d + manhattan(child_n.state);
+                int c = child_n.d + gap(child_n.state);
                 q.Add(c, c, child_n);
             }
         }
@@ -113,9 +107,9 @@ int main(int argc, char **argv ) {
     time_elap = double(t_end - t_init)/CLOCKS_PER_SEC;
     gen_per_sec = double(nodes_gen)/time_elap;
 
-    cout << "X, a*, manhattan, " << argv[2] << ", \"" << argv[1] << "\", ";
+    cout << "X, a*, gap, " << argv[2] << ", \"" << argv[1] << "\", ";
     cout << cost << ", ";
-    cout << manhattan(state) << ", ";
+    cout << gap(state) << ", ";
     cout << nodes_gen << ", ";
     cout << time_elap << ", ";
     cout << gen_per_sec << "\n";
