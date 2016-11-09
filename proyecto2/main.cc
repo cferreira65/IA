@@ -8,7 +8,7 @@
 #include <limits>
 #include "othello_cut.h" // won't work correctly until .h is fixed!
 #include "utils.h"
-
+#include <list>
 #include <unordered_map>
 
 using namespace std;
@@ -36,9 +36,54 @@ class hash_table_t : public unordered_map<state_t, stored_info_t, hash_function_
 
 hash_table_t TTable[2];
 
+//Funcion que retorna una lista de hijos del estado
+list <state_t> get_children(state_t state,color_player){
+	list <state_t> children;
+	
+	for( int pos = 0; pos < DIM; ++pos ) {
+            if(state.outflank(color_player,pos)) {
+                state_t new_state = state.move(color_player,pos);
+				children.push_back(new_state);
+            }
+    }
+	return children;	
+}
+
+//Definicion abstracta de maxmin
 int maxmin(state_t state, int depth, bool use_tt);
-int minmax(state_t state, int depth, bool use_tt = false);
-int maxmin(state_t state, int depth, bool use_tt = false);
+
+//Funcion minmax
+int minmax(state_t state, int depth, bool use_tt = false){
+
+	if (depth == 0 || state.terminal())
+		return state.value();
+
+	score = infinito;	
+	list <state_t> children = get_children(state,color_player);
+	
+	list <state_t>::iterator child = children.begin();
+	while(child != children.end()){
+		score = min(score, maxmin(child,depth - 1,use_tt));
+	}
+	return score;		
+}
+
+//Funcion maxmin
+int maxmin(state_t state, int depth, bool use_tt = false){
+
+	if (depth == 0 || state.terminal())
+		return state.value();
+
+	score = infinito;	
+	list <state_t> children = get_children(state,color_player);
+	
+	list <state_t>::iterator child = children.begin();
+	while(child != children.end()){
+		score = max(score, minmax(child,depth - 1,use_tt));
+	}
+	return score;		
+}
+
 int negamax(state_t state, int depth, int color, bool use_tt = false);
 int negamax(state_t state, int depth, int alpha, int beta, int color, bool use_tt = false);
 int scout(state_t state, int depth, int color, bool use_tt = false);
@@ -65,11 +110,11 @@ int main(int argc, const char **argv) {
     pv[0] = state;
     cout << "done!" << endl;
 
-#if 0
-    // print principal variation
-    for( int i = 0; i <= npv; ++i )
-        cout << pv[npv - i];
-#endif
+	//if (0){
+    	// print principal variation
+    //	for( int i = 0; i <= npv; ++i )
+    //    	cout << pv[npv - i];
+	//}
 
     // Print name of algorithm
     cout << "Algorithm: ";
