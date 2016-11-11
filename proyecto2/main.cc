@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <limits>
+#include <climits>
 #include "othello_cut.h" // won't work correctly until .h is fixed!
 #include "utils.h"
 #include <list>
@@ -37,7 +38,7 @@ class hash_table_t : public unordered_map<state_t, stored_info_t, hash_function_
 hash_table_t TTable[2];
 
 //Funcion que retorna una lista de hijos del estado
-list <state_t> get_children(state_t state,color_player){
+list <state_t> get_children(state_t state,bool color_player){
 	list <state_t> children;
 	
 	for( int pos = 0; pos < DIM; ++pos ) {
@@ -49,17 +50,35 @@ list <state_t> get_children(state_t state,color_player){
 	return children;	
 }
 
+//Funcion minimo
+int min(int score, int maxmin_result){
+	if (maxmin_result < score){
+		return maxmin_result;
+	}
+	return score;
+}
+
+//Funcion maximo
+int max(int score, int minmax_result){
+	if (minmax_result > score){
+		return minmax_result;
+	}
+	return score;
+}
+
 //Definicion abstracta de maxmin
 int maxmin(state_t state, int depth, bool use_tt);
 
 //Funcion minmax
 int minmax(state_t state, int depth, bool use_tt = false){
 
+	++expanded;	
+
 	if (depth == 0 || state.terminal())
 		return state.value();
 
-	score = infinito;	
-	list <state_t> children = get_children(state,color_player);
+	int score = INT_MAX;	
+	list <state_t> children = get_children(state,true);
 	
 	list <state_t>::iterator child = children.begin();
 	while(child != children.end()){
@@ -69,13 +88,15 @@ int minmax(state_t state, int depth, bool use_tt = false){
 }
 
 //Funcion maxmin
-int maxmin(state_t state, int depth, bool use_tt = false){
+int maxmin(state_t state, int depth, bool use_tt){
+
+	++expanded;
 
 	if (depth == 0 || state.terminal())
 		return state.value();
 
-	score = infinito;	
-	list <state_t> children = get_children(state,color_player);
+	int score = INT_MIN;	
+	list <state_t> children = get_children(state,false);
 	
 	list <state_t>::iterator child = children.begin();
 	while(child != children.end()){
