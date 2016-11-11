@@ -152,8 +152,14 @@ bool test(state_t state, int score, int color , bool use_tt){
     if (state.terminal())
         return (state.value() > score) ? true : false;
 
+    list <state_t> children; 
+	
+	if(color == 1){
+		children = get_children(state,true);
+	}else{
+		children = get_children(state,false);
+	}
 
-    list <state_t> children = get_children(state,true);
     list <state_t>::iterator child = children.begin();
 
     
@@ -174,27 +180,35 @@ int scout(state_t state, int depth, int color, bool use_tt = false){
     if (state.terminal())
         return state.value();
 
-    int score;
-    score = 0;
+    int score = 0;
 
-    list <state_t> children = get_children(state,true);
-
+    list <state_t> children; 
+	
+	if(color == 1){
+		children = get_children(state,true);
+	}else{
+		children = get_children(state,false);
+	}
+	
     if (children.empty()) {
-        ++generated;
-        score = scout(state, depth - 1, color, use_tt);
+        score = scout(state, depth - 1, -color, use_tt);
     }
     else {
-       list <state_t>::iterator child = children.begin();
-       score = scout(*child, depth - 1, color, use_tt);
-
+		list <state_t>::iterator child = children.begin();
+		if (color == 1){		
+			score = scout(*child, depth - 1, color, use_tt);
+		}else{
+			score = scout(*child, depth - 1, -color, use_tt);
+		}
+		++child;
         while(child != children.end()){
             if (color == 1 && test(*child, score, color, use_tt))
                 score = scout(*child,depth - 1, color, use_tt);
             else (color == -1 && !test(*child, score, color, use_tt));
-                score = scout(*child,depth - 1, color, use_tt);
+                score = scout(*child,depth - 1, -color, use_tt);
             ++child;
-    }
-}
+    	}
+	}
     return score;       
 }
 
