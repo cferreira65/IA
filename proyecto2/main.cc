@@ -120,7 +120,60 @@ int maxmin(state_t state, int depth, bool use_tt){
 
 int negamax(state_t state, int depth, int color, bool use_tt = false);
 int negamax(state_t state, int depth, int alpha, int beta, int color, bool use_tt = false);
-int scout(state_t state, int depth, int color, bool use_tt = false);
+
+bool test(state_t state, int score, int color , bool use_tt){
+
+    if (state.terminal())
+        return (state.value() > score) ? true : false;
+
+
+    list <state_t> children = get_children(state,true);
+    list <state_t>::iterator child = children.begin();
+
+    
+    while (child != children.end()){
+        if (color == 1 && test(*child,score, color, use_tt))
+            return true;
+        if (color == -1 && !test(*child,score, color, use_tt))
+            return false;
+    }
+    return (color == 1 ) ? false : true;
+
+}
+
+int scout(state_t state, int depth, int color, bool use_tt = false){
+    
+    ++expanded;
+
+    if (state.terminal())
+        return state.value();
+
+    int score;
+    score = 0;
+
+    list <state_t> children = get_children(state,true);
+
+    if (children.empty()) {
+        ++generated;
+        score = scout(state, depth - 1, color, use_tt);
+    }
+    else {
+       list <state_t>::iterator child = children.begin();
+       score = scout(*child, depth - 1, color, use_tt);
+
+        while(child != children.end()){
+            if (color == 1 && test(*child, score, color, use_tt))
+                score = scout(*child,depth - 1, color, use_tt);
+            else (color == -1 && !test(*child, score, color, use_tt));
+                score = scout(*child,depth - 1, color, use_tt);
+            ++child;
+    }
+}
+    return score;       
+}
+
+
+
 int negascout(state_t state, int depth, int alpha, int beta, int color, bool use_tt = false);
 
 int main(int argc, const char **argv) {
@@ -185,7 +238,7 @@ int main(int argc, const char **argv) {
             } else if( algorithm == 2 ) {
                 //value = negamax(pv[i], 0, -200, 200, color, use_tt);
             } else if( algorithm == 3 ) {
-                //value = scout(pv[i], 0, color, use_tt);
+                value = scout(pv[i], 0, color, use_tt);
             } else if( algorithm == 4 ) {
                 //value = negascout(pv[i], 0, -200, 200, color, use_tt);
             }
