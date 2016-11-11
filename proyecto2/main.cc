@@ -70,7 +70,7 @@ int max(int score, int minmax_result){
 int maxmin(state_t state, int depth, bool use_tt);
 
 //Funcion minmax
-int minmax(state_t state, int depth, bool use_tt = false){
+int minmax(state_t state, int depth, bool use_tt){
 
 	++expanded;	
 
@@ -78,16 +78,18 @@ int minmax(state_t state, int depth, bool use_tt = false){
 		return state.value();
 
 	int score = INT_MAX;	
-	list <state_t> children = get_children(state,true);
+	list <state_t> children = get_children(state,false);
 	
-	if (children.empty())
-		children.push_back(state);
-	
-	list <state_t>::iterator child = children.begin();
-	while(child != children.end()){
-		score = min(score, maxmin(*child,depth - 1,use_tt));
-		++child;
-	}
+	if (children.empty()) {
+		score = min(score, maxmin(state, depth - 1, use_tt));
+    }
+	else {
+	   list <state_t>::iterator child = children.begin();
+	   while(child != children.end()){
+		    score = min(score, maxmin(*child,depth - 1,use_tt));
+		    ++child;
+	    }
+    }
 	return score;		
 }
 
@@ -100,16 +102,19 @@ int maxmin(state_t state, int depth, bool use_tt){
 		return state.value();
 
 	int score = INT_MIN;	
-	list <state_t> children = get_children(state,false);
+	list <state_t> children = get_children(state,true);
 
-	if (children.empty())
-		children.push_back(state);
-	
-	list <state_t>::iterator child = children.begin();
-	while(child != children.end()){
-		score = max(score, minmax(*child,depth - 1,use_tt));
-		++child;
-	}
+    if (children.empty()) {
+        ++generated;
+        score = max(score, minmax(state, depth - 1, use_tt));
+    }
+    else {
+	   list <state_t>::iterator child = children.begin();
+	   while(child != children.end()){
+            score = max(score, minmax(*child,depth - 1,use_tt));
+		    ++child;
+	    }
+    }
 	return score;		
 }
 
