@@ -74,15 +74,19 @@ int minmax(state_t state, int depth, bool use_tt = false){
 
 	++expanded;	
 
-	if (depth == 0 || state.terminal())
+	if (state.terminal())
 		return state.value();
 
 	int score = INT_MAX;	
 	list <state_t> children = get_children(state,true);
 	
+	if (children.empty())
+		children.push_back(state);
+	
 	list <state_t>::iterator child = children.begin();
 	while(child != children.end()){
-		score = min(score, maxmin(child,depth - 1,use_tt));
+		score = min(score, maxmin(*child,depth - 1,use_tt));
+		++child;
 	}
 	return score;		
 }
@@ -92,15 +96,19 @@ int maxmin(state_t state, int depth, bool use_tt){
 
 	++expanded;
 
-	if (depth == 0 || state.terminal())
+	if (state.terminal())
 		return state.value();
 
 	int score = INT_MIN;	
 	list <state_t> children = get_children(state,false);
+
+	if (children.empty())
+		children.push_back(state);
 	
 	list <state_t>::iterator child = children.begin();
 	while(child != children.end()){
-		score = max(score, minmax(child,depth - 1,use_tt));
+		score = max(score, minmax(*child,depth - 1,use_tt));
+		++child;
 	}
 	return score;		
 }
@@ -166,7 +174,7 @@ int main(int argc, const char **argv) {
 
         try {
             if( algorithm == 0 ) {
-                //value = color * (color == 1 ? maxmin(pv[i], 0, use_tt) : minmax(pv[i], 0, use_tt));
+                value = color * (color == 1 ? maxmin(pv[i], 0, use_tt) : minmax(pv[i], 0, use_tt));
             } else if( algorithm == 1 ) {
                 //value = negamax(pv[i], 0, color, use_tt);
             } else if( algorithm == 2 ) {
