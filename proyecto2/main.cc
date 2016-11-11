@@ -145,7 +145,42 @@ int negamax(state_t state, int depth, int color, bool use_tt = false){
 	return alpha;
 	
 }
-int negamax(state_t state, int depth, int alpha, int beta, int color, bool use_tt = false);
+
+int negamax(state_t state, int depth, int alpha, int beta, int color, bool use_tt = false){
+
+	++expanded;
+
+	if (state.terminal())
+		return color * state.value();
+
+	int score = INT_MIN;
+
+	list <state_t> children;
+	if(color == 1){
+		children = get_children(state,true);
+	}else{
+		children = get_children(state,false);
+	}
+	
+	int val;
+
+	if (children.empty()) {
+    	val = -negamax(state, depth + 1, -alpha, -beta, -color, use_tt);
+		score = max(score,val);
+    }
+	else {
+	   list <state_t>::iterator child = children.begin();
+	   while(child != children.end()){
+            val = -negamax(*child, depth + 1, -alpha, -beta, -color, use_tt);
+			score = max(score,val);
+			alpha = max(alpha,val);
+			if (alpha >= beta)
+				break;
+		    ++child;
+	    }
+    }
+	return score;	
+}
 
 bool test(state_t state, int score, int color , bool use_tt){
 
