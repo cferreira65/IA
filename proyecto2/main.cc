@@ -165,13 +165,15 @@ int negamax(state_t state, int depth, int alpha, int beta, int color, bool use_t
 	int val;
 
 	if (children.empty()) {
-    	val = -negamax(state, depth + 1, -alpha, -beta, -color, use_tt);
+    	val = -negamax(state, depth + 1, -beta, -alpha, -color, use_tt);
 		score = max(score,val);
+        alpha = max(alpha,val);
+
     }
 	else {
 	   list <state_t>::iterator child = children.begin();
 	   while(child != children.end()){
-            val = -negamax(*child, depth + 1, -alpha, -beta, -color, use_tt);
+            val = -negamax(*child, depth + 1, -beta, -alpha, -color, use_tt);
 			score = max(score,val);
 			alpha = max(alpha,val);
 			if (alpha >= beta)
@@ -249,7 +251,51 @@ int scout(state_t state, int depth, int color, bool use_tt = false){
 
 
 
-int negascout(state_t state, int depth, int alpha, int beta, int color, bool use_tt = false);
+int negascout(state_t state, int depth, int alpha, int beta, int color, bool use_tt = false){
+
+    bool f_child = true; 
+    int score = 0;
+    ++expanded;
+
+    if (state.terminal())
+        return color * state.value();
+
+    list <state_t> children;
+    if(color == 1){
+        children = get_children(state,true);
+    }else{
+        children = get_children(state,false);
+    }
+
+    if (children.empty()) {
+        score = -negascout(state, depth - 1, -beta, -alpha, -color, use_tt);
+        alpha = max(alpha, score);
+    }
+
+    else {
+        list <state_t>::iterator child = children.begin();
+        while(child != children.end()){
+            if (f_child) {
+                f_child = false;
+                score = -negascout(*child, depth - 1, -beta, -alpha, -color, use_tt);
+            }
+            else {
+                score = -negascout(*child, depth - 1, -alpha -1, -alpha, -color, use_tt);
+
+                if (alpha < score && score < beta){
+                    score = -negascout(*child, depth - 1, -beta, -score, -color, use_tt);
+                    
+                }
+            }
+            alpha = max(alpha, score);
+            if (alpha >= beta)
+                break;
+            ++child;
+        }
+    }
+    return alpha;
+
+}
 
 int main(int argc, const char **argv) {
     state_t pv[128];
@@ -311,11 +357,11 @@ int main(int argc, const char **argv) {
             } else if( algorithm == 1 ) {
                 value = negamax(pv[i], 0, color, use_tt);
             } else if( algorithm == 2 ) {
-                //value = negamax(pv[i], 0, -200, 200, color, use_tt);
+                value = negamax(pv[i], 0, -200, 200, color, use_tt);
             } else if( algorithm == 3 ) {
                 value = scout(pv[i], 0, color, use_tt);
             } else if( algorithm == 4 ) {
-                //value = negascout(pv[i], 0, -200, 200, color, use_tt);
+                value = negascout(pv[i], 0, -200, 200, color, use_tt);
             }
         } catch( const bad_alloc &e ) {
             cout << "size TT[0]: size=" << TTable[0].size() << ", #buckets=" << TTable[0].bucket_count() << endl;
