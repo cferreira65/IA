@@ -85,12 +85,14 @@ int minmax(state_t state, int depth, bool use_tt){
 	for ( int pos = 0; pos < DIM; ++pos ){
         if (state.outflank(false,pos)){
             empty = false;
+            ++generated;
             child = state.move(false,pos);
 		    score = min(score, maxmin(child,depth - 1,use_tt));
 	    }
     }
 
     if (empty){
+        ++generated;
         score = min(score, maxmin(state, depth - 1, use_tt));
     }
 
@@ -113,12 +115,14 @@ int maxmin(state_t state, int depth, bool use_tt){
     for ( int pos = 0; pos < DIM; ++pos ){
         if (state.outflank(true,pos)){
             empty = false;
+            ++generated;
             child = state.move(true,pos);
             score = max(score, minmax(child,depth - 1,use_tt));
         }
     }
 
     if (empty){
+        ++generated;
         score = max(score, minmax(state, depth - 1, use_tt));
     }
 
@@ -203,23 +207,26 @@ bool test(state_t state, int score, int color, bool condition, bool use_tt){
     else if (state.terminal() && !condition) 
         return state.value() >= score ? true : false;
 
+    bool is_color = color == 1;
     bool empty = true; 
     state_t child;
     for( int pos = 0; pos < DIM; ++pos ) {
-        if(state.outflank(color == 1 ,pos)) {
+        if(state.outflank(is_color ,pos)) {
             empty = false;
-            child = state.move(color == 1,pos);
-            if (color == 1 && test(child, score, -color, condition, use_tt))
+            ++generated;
+            child = state.move(is_color,pos);
+            if (is_color && test(child, score, -color, condition, use_tt))
                 return true;
-            if (color == -1 && !test(child, score, -color, condition, use_tt))
+            if (!is_color && !test(child, score, -color, condition, use_tt))
                 return false;
         }
     }
 
     if (empty) {
-        if (color == 1 && test(state, score, -color, condition, use_tt))
+        ++generated;
+        if (is_color && test(state, score, -color, condition, use_tt))
             return true;
-        if (color == -1 && !test(state, score, -color, condition, use_tt))
+        if (!is_color && !test(state, score, -color, condition, use_tt))
             return false;
     }
 
@@ -243,6 +250,7 @@ int scout(state_t state, int depth, int color, bool use_tt = false){
     for( int pos = 0; pos < DIM; ++pos ) {
         if(state.outflank(is_color ,pos)) {
             empty = false;
+            ++generated;
             child = state.move(is_color,pos);
             if (f_child) {
                 f_child = false;
@@ -257,8 +265,10 @@ int scout(state_t state, int depth, int color, bool use_tt = false){
         }
     }
 
-    if (empty)
+    if (empty){
+        ++generated;
         score = scout(state, depth - 1, -color, use_tt);
+    }
 
     return score;
 }
@@ -280,6 +290,7 @@ int negascout(state_t state, int depth, int alpha, int beta, int color, bool use
     for( int pos = 0; pos < DIM; ++pos ) {
         if(state.outflank(is_color ,pos)) {
             empty = false;
+            ++generated;
             child = state.move(is_color,pos);
             if (f_child) {
                 f_child = false;
@@ -299,6 +310,7 @@ int negascout(state_t state, int depth, int alpha, int beta, int color, bool use
     }
     
     if (empty){
+        ++generated;
         score = -negascout(state, depth - 1, -beta, -alpha, -color, use_tt);
         alpha = max(alpha, score);
     }
