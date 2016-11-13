@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ $# != 3 ];then
-	echo "./Script ./<Program> <Num_Algorithm> <Arch>.txt"
+if [ $# != 2 ];then
+	echo "./Script <Num_Algorithm> <Arch>.txt"
 else
-	timeout 1m $1 $2 >> $3
+	timeout 10m "./main" $1 >> $2
 fi 
