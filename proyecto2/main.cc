@@ -72,12 +72,12 @@ int maxmin(state_t state, int depth, bool use_tt);
 //Funcion minmax
 int minmax(state_t state, int depth, bool use_tt){
 
-	++expanded;	
-
 	if (state.terminal())
 		return state.value();
 
-	int score = INT_MAX;	
+    ++expanded; 
+
+	int score = INT_MAX;
 	list <state_t> children = get_children(state,false);
 	
 	if (children.empty()) {
