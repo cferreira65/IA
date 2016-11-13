@@ -127,68 +127,72 @@ int maxmin(state_t state, int depth, bool use_tt){
 
 int negamax(state_t state, int depth, int color, bool use_tt = false){
 	
-	++expanded;
+	bool empty = true;
+    bool is_color = 1 == color;		
 
 	if (state.terminal())
 		return color * state.value();
+	
+	++expanded;
 
 	int alpha = INT_MIN;
-	list <state_t> children;
-	if(color == 1){
-		children = get_children(state,true);
-	}else{
-		children = get_children(state,false);
+
+	list <state_t> children; 
+	state_t child;
+
+    for( int pos = 0; pos < DIM; ++pos ) {
+        if(state.outflank(is_color ,pos)) {
+			++generated;
+            empty = false;
+            child = state.move(is_color,pos);
+            alpha = max(alpha, -negamax(child, depth + 1, -color, use_tt));
+        }
+    }
+
+    if (empty){
+		++generated;
+		alpha = max(alpha, -negamax(state, depth + 1, -color, use_tt));
 	}
 
-	if (children.empty()) {
-        alpha = max(alpha, -negamax(state, depth + 1, -color, use_tt));
-    }
-    else {
-	   list <state_t>::iterator child = children.begin();
-	   while(child != children.end()){
-            alpha = max(alpha, -negamax(*child, depth + 1, -color, use_tt));
-		    ++child;
-	    }
-    }
 	return alpha;
 	
 }
 
 int negamax(state_t state, int depth, int alpha, int beta, int color, bool use_tt = false){
 
-	++expanded;
+	bool empty = true;
+    bool is_color = 1 == color;	
 
 	if (state.terminal())
 		return color * state.value();
 
+	++expanded;
+
 	int score = INT_MIN;
 
-	list <state_t> children;
-	if(color == 1){
-		children = get_children(state,true);
-	}else{
-		children = get_children(state,false);
-	}
+	int val = 0;
 	
-	int val;
+	list <state_t> children; 
+	state_t child;
 
-	if (children.empty()) {
-    	val = -negamax(state, depth + 1, -beta, -alpha, -color, use_tt);
-		score = max(score,val);
-        alpha = max(alpha,val);
-
-    }
-	else {
-	   list <state_t>::iterator child = children.begin();
-	   while(child != children.end()){
-            val = -negamax(*child, depth + 1, -beta, -alpha, -color, use_tt);
+    for( int pos = 0; pos < DIM; ++pos ) {
+        if(state.outflank(is_color ,pos)) {
+			++generated;
+            empty = false;
+            child = state.move(is_color,pos);
+            val = -negamax(child, depth + 1, -beta, -alpha, -color, use_tt);
 			score = max(score,val);
 			alpha = max(alpha,val);
 			if (alpha >= beta)
 				break;
-		    ++child;
-	    }
+        }
     }
+
+    if (empty){
+		++generated;
+		val = -negamax(state, depth + 1, -beta, -alpha, -color, use_tt);
+        score = max(score,val);
+	}
 	return score;	
 }
 
@@ -227,6 +231,7 @@ int scout(state_t state, int depth, int color, bool use_tt = false){
     bool f_child = true;    
     bool empty = true;
     bool is_color = 1 == color;
+    state_t child;
 
     if (state.terminal())
         return state.value();
@@ -235,8 +240,6 @@ int scout(state_t state, int depth, int color, bool use_tt = false){
 
     int score = 0;
 
-    list <state_t> children; 
-	state_t child;
     for( int pos = 0; pos < DIM; ++pos ) {
         if(state.outflank(is_color ,pos)) {
             empty = false;
@@ -260,50 +263,44 @@ int scout(state_t state, int depth, int color, bool use_tt = false){
     return score;
 }
 
-
-
 int negascout(state_t state, int depth, int alpha, int beta, int color, bool use_tt = false){
 
-    bool f_child = true; 
+    bool f_child = true;    
+    bool empty = true;
+    bool is_color = 1 == color;
     int score = 0;
+    state_t child;
 
     if (state.terminal())
         return color * state.value();
 
     ++expanded;
 
-    list <state_t> children;
-    if(color == 1){
-        children = get_children(state,true);
-    }else{
-        children = get_children(state,false);
-    }
-
-    if (children.empty()) {
-        score = -negascout(state, depth - 1, -beta, -alpha, -color, use_tt);
-        alpha = max(alpha, score);
-    }
-
-    else {
-        list <state_t>::iterator child = children.begin();
-        while(child != children.end()){
+ 
+    for( int pos = 0; pos < DIM; ++pos ) {
+        if(state.outflank(is_color ,pos)) {
+            empty = false;
+            child = state.move(is_color,pos);
             if (f_child) {
                 f_child = false;
-                score = -negascout(*child, depth - 1, -beta, -alpha, -color, use_tt);
+                score = -negascout(child, depth - 1, -beta, -alpha, -color, use_tt);
             }
             else {
-                score = -negascout(*child, depth - 1, -alpha -1, -alpha, -color, use_tt);
+                score = -negascout(child, depth - 1, -alpha -1, -alpha, -color, use_tt);
 
-                if (alpha < score && score < beta){
-                    score = -negascout(*child, depth - 1, -beta, -score, -color, use_tt);
-                    
-                }
+                if (alpha < score && score < beta)
+                    score = -negascout(child, depth - 1, -beta, -score, -color, use_tt);
             }
+            
             alpha = max(alpha, score);
             if (alpha >= beta)
                 break;
-            ++child;
-        }
+        }        
+    }
+    
+    if (empty){
+        score = -negascout(state, depth - 1, -beta, -alpha, -color, use_tt);
+        alpha = max(alpha, score);
     }
     return alpha;
 
