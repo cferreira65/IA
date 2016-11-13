@@ -218,27 +218,29 @@ int scout(state_t state, int depth, int color, bool use_tt = false){
 
     bool f_child = true;    
     bool empty = true;
-    ++expanded;
+    bool is_color = 1 == color;
 
     if (state.terminal())
         return state.value();
+
+    ++expanded;
 
     int score = 0;
 
     list <state_t> children; 
 	state_t child;
     for( int pos = 0; pos < DIM; ++pos ) {
-        if(state.outflank(color == 1 ,pos)) {
+        if(state.outflank(is_color ,pos)) {
             empty = false;
-            child = state.move(color == 1,pos);
+            child = state.move(is_color,pos);
             if (f_child) {
                 f_child = false;
                 score = scout(child, depth - 1, -color, use_tt);
             }
             else {
-                if (color == 1 && test(child, score, -color, true, use_tt))
+                if (is_color && test(child, score, -color, true, use_tt))
                     score = scout(child,depth - 1, -color, use_tt);
-                if (color == -1 && !test(child, score, -color, false, use_tt))
+                if (!is_color && !test(child, score, -color, false, use_tt))
                     score = scout(child,depth - 1, -color, use_tt);
             }
         }
@@ -256,10 +258,11 @@ int negascout(state_t state, int depth, int alpha, int beta, int color, bool use
 
     bool f_child = true; 
     int score = 0;
-    ++expanded;
 
     if (state.terminal())
         return color * state.value();
+
+    ++expanded;
 
     list <state_t> children;
     if(color == 1){
