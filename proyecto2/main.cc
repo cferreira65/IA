@@ -187,41 +187,37 @@ int negamax(state_t state, int depth, int alpha, int beta, int color, bool use_t
 bool test(state_t state, int score, int color, bool condition, bool use_tt){
 
     if (state.terminal() && condition)
-        return (state.value() > score) ? true : false;
-    else (state.terminal() && !condition);
-        return (state.value() >= score) ? true : false;
+        return state.value() > score ? true : false;
+    else if (state.terminal() && !condition) 
+        return state.value() >= score ? true : false;
 
-    list <state_t> children; 
-	
-	if(color == 1){
-		children = get_children(state,true);
-	}else{
-		children = get_children(state,false);
-	}
-
-    if (children.empty()){
-        if (color == 1 && test(state, score, -color, condition, use_tt))
-            return true;
-        if (color == -1 && !test(state, score, -color, condition, use_tt))
-            return false;        
-    }
-
-    else {
-        list <state_t>::iterator child = children.begin();
-        while (child != children.end()){
-            if (color == 1 && test(*child, score, -color, condition, use_tt))
+    bool empty = true; 
+    state_t child;
+    for( int pos = 0; pos < DIM; ++pos ) {
+        if(state.outflank(color == 1 ,pos)) {
+            empty = false;
+            child = state.move(color == 1,pos);
+            if (color == 1 && test(child, score, -color, condition, use_tt))
                 return true;
-            if (color == -1 && !test(*child, score, -color, condition, use_tt))
+            if (color == -1 && !test(child, score, -color, condition, use_tt))
                 return false;
         }
     }
-    return (color == 1 ) ? false : true;
 
+    if (empty) {
+        if (color == 1 && test(state, score, -color, condition, use_tt))
+            return true;
+        if (color == -1 && !test(state, score, -color, condition, use_tt))
+            return false;
+    }
+
+    return color == 1 ? false : true;
 }
 
 int scout(state_t state, int depth, int color, bool use_tt = false){
 
     bool f_child = true;    
+    bool empty = true;
     ++expanded;
 
     if (state.terminal())
@@ -230,35 +226,28 @@ int scout(state_t state, int depth, int color, bool use_tt = false){
     int score = 0;
 
     list <state_t> children; 
-	
-	if(color == 1){
-		children = get_children(state,true);
-	}else{
-		children = get_children(state,false);
-	}
-	
-    if (children.empty()) {
-        score = scout(state, depth - 1, -color, use_tt);
-    }
-
-    else {
-        list <state_t>::iterator child = children.begin();
-        while(child != children.end()){
+	state_t child;
+    for( int pos = 0; pos < DIM; ++pos ) {
+        if(state.outflank(color == 1 ,pos)) {
+            empty = false;
+            child = state.move(color == 1,pos);
             if (f_child) {
                 f_child = false;
-                score = scout(*child, depth - 1, -color, use_tt);
+                score = scout(child, depth - 1, -color, use_tt);
             }
             else {
-                if (color == 1 && test(*child, score, -color, true, use_tt))
-                    score = scout(*child,depth - 1, -color, use_tt);
-                else (color == -1 && !test(*child, score, -color, false, use_tt));
-                    score = scout(*child,depth - 1, -color, use_tt);
-    	    }
-        ++child;
-	   }
+                if (color == 1 && test(child, score, -color, true, use_tt))
+                    score = scout(child,depth - 1, -color, use_tt);
+                if (color == -1 && !test(child, score, -color, false, use_tt))
+                    score = scout(child,depth - 1, -color, use_tt);
+            }
+        }
     }
-    return score;       
 
+    if (empty)
+        score = scout(state, depth - 1, -color, use_tt);
+
+    return score;
 }
 
 
@@ -371,7 +360,7 @@ int main(int argc, const char **argv) {
             } else if( algorithm == 2 ) {
                 value = negamax(pv[i], 0, -200, 200, color, use_tt);
             } else if( algorithm == 3 ) {
-                value = scout(pv[i], 0, color, use_tt);
+                value = color * scout(pv[i], 0, color, use_tt);
             } else if( algorithm == 4 ) {
                 value = negascout(pv[i], 0, -200, 200, color, use_tt);
             }
