@@ -221,6 +221,7 @@ int scout(state_t state, int depth, int color, bool use_tt = false){
     bool f_child = true;    
     bool empty = true;
     bool is_color = 1 == color;
+    state_t child;
 
     if (state.terminal())
         return state.value();
@@ -229,8 +230,6 @@ int scout(state_t state, int depth, int color, bool use_tt = false){
 
     int score = 0;
 
-    list <state_t> children; 
-	state_t child;
     for( int pos = 0; pos < DIM; ++pos ) {
         if(state.outflank(is_color ,pos)) {
             empty = false;
@@ -254,50 +253,44 @@ int scout(state_t state, int depth, int color, bool use_tt = false){
     return score;
 }
 
-
-
 int negascout(state_t state, int depth, int alpha, int beta, int color, bool use_tt = false){
 
-    bool f_child = true; 
+    bool f_child = true;    
+    bool empty = true;
+    bool is_color = 1 == color;
     int score = 0;
+    state_t child;
 
     if (state.terminal())
         return color * state.value();
 
     ++expanded;
 
-    list <state_t> children;
-    if(color == 1){
-        children = get_children(state,true);
-    }else{
-        children = get_children(state,false);
-    }
-
-    if (children.empty()) {
-        score = -negascout(state, depth - 1, -beta, -alpha, -color, use_tt);
-        alpha = max(alpha, score);
-    }
-
-    else {
-        list <state_t>::iterator child = children.begin();
-        while(child != children.end()){
+ 
+    for( int pos = 0; pos < DIM; ++pos ) {
+        if(state.outflank(is_color ,pos)) {
+            empty = false;
+            child = state.move(is_color,pos);
             if (f_child) {
                 f_child = false;
-                score = -negascout(*child, depth - 1, -beta, -alpha, -color, use_tt);
+                score = -negascout(child, depth - 1, -beta, -alpha, -color, use_tt);
             }
             else {
-                score = -negascout(*child, depth - 1, -alpha -1, -alpha, -color, use_tt);
+                score = -negascout(child, depth - 1, -alpha -1, -alpha, -color, use_tt);
 
-                if (alpha < score && score < beta){
-                    score = -negascout(*child, depth - 1, -beta, -score, -color, use_tt);
-                    
-                }
+                if (alpha < score && score < beta)
+                    score = -negascout(child, depth - 1, -beta, -score, -color, use_tt);
             }
+            
             alpha = max(alpha, score);
             if (alpha >= beta)
                 break;
-            ++child;
-        }
+        }        
+    }
+    
+    if (empty){
+        score = -negascout(state, depth - 1, -beta, -alpha, -color, use_tt);
+        alpha = max(alpha, score);
     }
     return alpha;
 
