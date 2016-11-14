@@ -3,6 +3,9 @@
 // Author: Blai Bonet
 // Last Revision: 1/11/16
 // Modified by: 
+//        * Chiseng Ng Yu               09-11245
+//        * María Lourdes Garcia Florez 10-10264
+//        * Carlos Ferreira             11-10323
 
 #include <iostream>
 #include <limits>

@@ -15,34 +15,44 @@
 
     La representación del juego viene dado por 4 matrices donde cada una 
 representa respectivamente las filas, colummnas, la diagonal principal 
-(izquierda a derecha) y la diagonal *inserte nombre* (derecha a izquierda). 
-Cada matriz contiene 32 elementos debido a que no contamos las 4 piezas que ya 
-estan colocadas al principio del juego, cada una de estas contiene 7 elementos
-debido a las 6 piezas que podrian estar en el tablero (6x6) y el último 
-elemento representa que me salí del tablero representado con el -1. Cabe 
-destacar que en las diagonales es posible salirse del tablero en otras 
-posiciones que no sea la última.
+(izquierda a derecha) y la diagonal secundaria(derecha a izquierda). 
+Cada matriz contiene 32 elementos horizontales(filas) debido a que no contamos
+las 4 piezas que ya estan colocadas al principio del juego, cada una de estas 
+contiene 7 elementos verticales(columnas) debido a las 6 piezas que podrian 
+estar en el tablero (6x6) y el último elemento significa que me salí del 
+tablero representado con el -1. Cabe destacar que en las diagonales es posible 
+salirse del tablero en otras posiciones que no sea la última.
 
 --- Minmax/Maxmin ---
 
-    Por los resultados, vemos que es el mas lento de los algoritmos, que es el
-resultado esperado. Esto se debe a que recorre todos los nodos hasta llegar a 
+    Por los resultados, vemos que es el mas lento de los algoritmos, el cual, es 
+el resultado esperado. Esto se debe a que recorre todos los nodos hasta llegar a 
 la solución, comparando los valores dados, dependiendo de si el nodo es un nodo
-máximo o mínimo.
+máximo o mínimo, a traves de la evaluacion de dos funciones que se llaman
+recursivamente, la una a la otra. De modo que por la presencia de esta evaluacion
+doblemente recursiva se gasta mas tiempo de computo que en los demas algoritmos.
 
 --- Versión Negamax de Minmax/Maxmin ---
 
     Un poco mejor que Minmax-Maxmin, pero no por mucho, lo cual es obvio en 
-vista que es práctimante el mismo algoritmo solo que aprovechando una
-propiedad, se deja todo expresado en una sola función en vez de 2.
+vista que es práctimante el mismo algoritmo solo que aprovechando la 
+propiedad max{a,b} == -min{-a,-b}, se deja todo expresado en una sola función en 
+vez de dos. Por lo que se mejora una poco el tiempo que tarda en conseguir el valor
+del juego, al depender de la evalución de una sola funcion, aun si todavia se estan
+recorriendo todos los nodos.
 
 --- Versión Negamax de Minmax/Maxmin con poda alpha-beta ---
 
-    La versión mejorada de negamax, este algoritmo consiste en tener 2 valores,
-uno máximo y uno mínimo, para ir comparando con los nodos que seguiremos
-explorando, para lograr saber cuando podemos podar ciertas ramas del árbol y
-explorar una cantidad menor de nodos. Por los resultados se ve que su mejora 
-fue muy considerable comparado con los 2 algoritmos anteriores.
+    La versión mejorada de negamax, este algoritmo consiste en tener dos valores,
+uno máximo para el jugador Max(Negras) y uno mínimo para el jugador Min(blancas), que 
+ira comparando los nodos que se van explorando, para lograr saber cuando se pueden 
+podar ciertas ramas del árbol y asi explorar una cantidad menor de nodos. Por los 
+resultados se ve que su mejora fue muy considerable comparado con los dos algoritmos 
+anteriores. Esto se nota cuando analizamos los resultados arrojados, viendo que desde 
+cierto nivel en este algoritmo, el numero de expandidos es menor que el presentado en 
+los resultados de los algoritmos anteriores, por lo que se efectuan menos llamadas 
+recursivas, mejorando asi el tiempo de computo requerido para encontrar el valor del
+juego.
 
 --- Scout --- (Revisar)
 
