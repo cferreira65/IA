@@ -16,45 +16,45 @@
     La representación del juego viene dado por 4 matrices donde cada una 
 representa respectivamente las filas, colummnas, la diagonal principal 
 (izquierda a derecha) y la diagonal *inserte nombre* (derecha a izquierda). 
-Cada matriz contiene 32 elementos debido a que no contamos las 4 piezas que 
-ya estan colocadas al principio del juego, cada una de estas contiene 7 
-elementos debido a las 6 piezas que podrian estar en el tablero (6x6) y el 
-último elemento representa que me salí del tablero representado conel -1,
-cabe destacar que en las diagonales es posible salirse del tablero en otras
+Cada matriz contiene 32 elementos debido a que no contamos las 4 piezas que ya 
+estan colocadas al principio del juego, cada una de estas contiene 7 elementos
+debido a las 6 piezas que podrian estar en el tablero (6x6) y el último 
+elemento representa que me salí del tablero representado con el -1. Cabe 
+destacar que en las diagonales es posible salirse del tablero en otras 
 posiciones que no sea la última.
 
 --- Minmax/Maxmin ---
 
-    Por los resultados vemos que es el mas lento de los algoritmos que es el
+    Por los resultados, vemos que es el mas lento de los algoritmos, que es el
 resultado esperado. Esto se debe a que recorre todos los nodos hasta llegar a 
-la solución comparando los valores dados dependiendo de si el nodo es un nodo
+la solución, comparando los valores dados, dependiendo de si el nodo es un nodo
 máximo o mínimo.
 
 --- Versión Negamax de Minmax/Maxmin ---
 
     Un poco mejor que Minmax-Maxmin, pero no por mucho, lo cual es obvio en 
-vista a que es práctimante el mismo algoritmo solo que aprovechando una
-propiedad dejas todo expresado en una sola función en vez de 2.
+vista que es práctimante el mismo algoritmo solo que aprovechando una
+propiedad, se deja todo expresado en una sola función en vez de 2.
 
 --- Versión Negamax de Minmax/Maxmin con poda alpha-beta ---
 
-    La versión mejorada de negamax, este algoritmo consiste en tener 2 
-valores uno máximo y uno mínimo para ir comparando con los nodos que seguiremos
+    La versión mejorada de negamax, este algoritmo consiste en tener 2 valores,
+uno máximo y uno mínimo, para ir comparando con los nodos que seguiremos
 explorando, para lograr saber cuando podemos podar ciertas ramas del árbol y
-explorar una cantidad menor de nodos, por los resultados se ve que su mejora 
+explorar una cantidad menor de nodos. Por los resultados se ve que su mejora 
 fue muy considerable comparado con los 2 algoritmos anteriores.
 
 --- Scout --- (Revisar)
 
     Trata de reducir el camino buscado, viendo si los hijos pueden tener un
-mejor valor que ya tienes, resultando en un podado mas grande que el algoritmo
-anterior, esto se ve en el rendimiento del algoritmo que llego un piso mas 
-abajo.
+mejor valor que el que ya tienes, resultando en un podado mas grande que el 
+algoritmo anterior. Esto se ve en el rendimiento del algoritmo que llego un 
+piso mas abajo.
 
 --- Negascout ---(Revisar)
 
-    Al igual que la versión negamax con poda alpha-beta guarda 2 valores, uno
-para el máximo y otro para el mínimo para comparar y asi podar aún pedazos más
-grandes del árbol dandonos en tiempo el mejor algoritmo de los realizdos.
+    Al igual que la versión negamax con poda alpha-beta, guarda 2 valores, uno
+para el máximo y otro para el mínimo, para comparar y asi podar pedazos aún más
+grandes del árbol, dandonos, en tiempo, el mejor algoritmo de los realizdos.
 
 -------------------------------------------------------------------------------
