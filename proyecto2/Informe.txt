@@ -23,48 +23,77 @@ estar en el tablero (6x6) y el último elemento significa que me salí del
 tablero representado con el -1. Cabe destacar que en las diagonales es posible 
 salirse del tablero en otras posiciones que no sea la última.
 
++----+----+----+----+----+----+
+| 4  | 5  | 6  | 7  | 8  | 9  |
++----+----+----+----+----+----+
+| 10 | 11 | 12 | 13 | 14 | 15 |
++----+----+----+----+----+----+
+| 16 | 17 | 0  | 1  | 18 | 19 |
++----+----+----+----+----+----+
+| 20 | 21 | 2  | 3  | 22 | 23 |
++----+----+----+----+----+----+
+| 24 | 25 | 26 | 27 | 28 | 29 |
++----+----+----+----+----+----+
+| 30 | 31 | 32 | 33 | 34 | 35 |
++----+----+----+----+----+----+
+
 --- Minmax/Maxmin ---
 
-    Por los resultados, vemos que es el mas lento de los algoritmos, el cual, es 
-el resultado esperado. Esto se debe a que recorre todos los nodos hasta llegar a 
-la solución, comparando los valores dados, dependiendo de si el nodo es un nodo
-máximo o mínimo, a traves de la evaluacion de dos funciones que se llaman
-recursivamente, la una a la otra. De modo que por la presencia de esta evaluacion
-doblemente recursiva se gasta mas tiempo de computo que en los demas algoritmos.
+    Por los resultados, vemos que es el mas lento de los algoritmos, el cual, 
+es el resultado esperado. Esto se debe a que recorre todos los nodos hasta 
+llegar a la solución, comparando los valores dados, dependiendo de si el nodo 
+es un nodo máximo o mínimo, a traves de la evaluacion de dos funciones que se 
+llaman recursivamente, la una a la otra. De modo que por la presencia de esta 
+evaluacion doblemente recursiva se gasta mas tiempo de computo que en los demas 
+algoritmos.
 
 --- Versión Negamax de Minmax/Maxmin ---
 
-    Un poco mejor que Minmax-Maxmin, pero no por mucho, lo cual es obvio en 
-vista que es práctimante el mismo algoritmo solo que aprovechando la 
-propiedad max{a,b} == -min{-a,-b}, se deja todo expresado en una sola función en 
-vez de dos. Por lo que se mejora una poco el tiempo que tarda en conseguir el valor
-del juego, al depender de la evalución de una sola funcion, aun si todavia se estan
+    Es un poco mejor que Minmax-Maxmin, pero no por mucho, lo cual es obvio en 
+vista que es práctimante el mismo algoritmo solo que aprovechando la propiedad 
+max{a,b} == -min{-a,-b}, se deja todo expresado en una sola función en vez de 
+dos. Por lo que se mejora una poco el tiempo que tarda en conseguir el valor del 
+juego, al depender de la evalución de una sola funcion, aun si todavia se estan
 recorriendo todos los nodos.
 
 --- Versión Negamax de Minmax/Maxmin con poda alpha-beta ---
 
-    La versión mejorada de negamax, este algoritmo consiste en tener dos valores,
-uno máximo para el jugador Max(Negras) y uno mínimo para el jugador Min(blancas), que 
-ira comparando los nodos que se van explorando, para lograr saber cuando se pueden 
-podar ciertas ramas del árbol y asi explorar una cantidad menor de nodos. Por los 
-resultados se ve que su mejora fue muy considerable comparado con los dos algoritmos 
-anteriores. Esto se nota cuando analizamos los resultados arrojados, viendo que desde 
-cierto nivel en este algoritmo, el numero de expandidos es menor que el presentado en 
-los resultados de los algoritmos anteriores, por lo que se efectuan menos llamadas 
-recursivas, mejorando asi el tiempo de computo requerido para encontrar el valor del
-juego.
+    Esta es la versión mejorada de negamax, este algoritmo consiste en tener 
+dos valores, uno máximo para el jugador Max(Negras) y uno mínimo para el jugador
+Min(blancas), que ira comparando los nodos que se van explorando, para lograr 
+saber cuando se pueden podar ciertas ramas del árbol y asi explorar una cantidad
+menor de nodos. Por los resultados se ve que su mejora fue muy considerable 
+comparado con los dos algoritmos anteriores. Esto se nota cuando analizamos los 
+resultados arrojados, viendo que desde cierto nivel en este algoritmo, el numero
+de expandidos es menor que el presentado en los resultados de los algoritmos 
+anteriores, por lo que se efectuan menos llamadas recursivas, mejorando asi el 
+tiempo de computo requerido para encontrar el valor del juego.
 
---- Scout --- (Revisar)
+--- Scout ---
 
-    Trata de reducir el camino buscado, viendo si los hijos pueden tener un
-mejor valor que el que ya tienes, resultando en un podado mas grande que el 
-algoritmo anterior. Esto se ve en el rendimiento del algoritmo que llego un 
-piso mas abajo.
+    En este algoritmo se rata de reducir el camino buscado, viendo si los hijos 
+pueden tener un mejor valor del que ya se tiene, dependiendo de si es un nodo 
+minimo o un nodo maximo, resultando en un podado mas grande que el algoritmo 
+anterior, aun si debido al test o prueba que hace se esten evaluando mas estados
+en ciertos niveles que en otros, lo cual podemos notar en el numero de generados
+de los primeros niveles del resultado. Pero en los niveles mas inferiores 
+podemos verificar que ya teniendo un valor calculado que se acerca al esperado, 
+el cual va pasando en cada llamada del test o prueba; tanto el numero de 
+generados como el de expandidos presenta una reduccion significativa que influye
+a la vez en el tiempo de computo. Otorgando un mejor rendimiento en el presente 
+algoritmo en comparacion a los anteriores, ya que se logra llegar a un nivel mas
+abajo.
 
---- Negascout ---(Revisar)
+--- Negascout ---
 
-    Al igual que la versión negamax con poda alpha-beta, guarda 2 valores, uno
-para el máximo y otro para el mínimo, para comparar y asi podar pedazos aún más
-grandes del árbol, dandonos, en tiempo, el mejor algoritmo de los realizdos.
+    Este algoritmo al igual que la versión negamax con poda alpha-beta, guarda 
+dos valores, uno máximo para el jugador Max(Negras) y uno mínimo para el jugador
+Min(blancas), que va comparando de acuerdo a la estrategia utilizada por scout
+con el valor respectivo. Esto resulta en la mayoria de los casos, en un podado 
+mayor al de scout y alpha-beta pruning, debido a que combina las ventajas de las
+dos estrategias. Esto lo podemos notar en la mejora de tiempo que se da, debido
+a que se expande un poco mas, podando las ramas; en vez de realizar tantas 
+verificaciones repetidas de estados como lo hacia scout con el test, si 
+comparamos el numero de generados y expandidos de los dos algoritmos.
 
 -------------------------------------------------------------------------------
