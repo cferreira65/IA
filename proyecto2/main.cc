@@ -40,20 +40,7 @@ class hash_table_t : public unordered_map<state_t, stored_info_t, hash_function_
 
 hash_table_t TTable[2];
 
-//Funcion que retorna una lista de hijos del estado
-list <state_t> get_children(state_t state,bool color_player){
-	list <state_t> children;
-	
-	for( int pos = 0; pos < DIM; ++pos ) {
-            if(state.outflank(color_player,pos)) {
-                state_t new_state = state.move(color_player,pos);
-				children.push_back(new_state);
-            }
-    }
-	return children;	
-}
-
-//Funcion minimo
+//Function mininum
 int min(int score, int maxmin_result){
 	if (maxmin_result < score){
 		return maxmin_result;
@@ -61,7 +48,7 @@ int min(int score, int maxmin_result){
 	return score;
 }
 
-//Funcion maximo
+//Function maximum
 int max(int score, int minmax_result){
 	if (minmax_result > score){
 		return minmax_result;
@@ -69,14 +56,14 @@ int max(int score, int minmax_result){
 	return score;
 }
 
-//Definicion abstracta de maxmin
+//Forward declaretion of maxmin
 int maxmin(state_t state, int depth, bool use_tt);
 
-//Funcion minmax
+//Function minmax
 int minmax(state_t state, int depth, bool use_tt){
 
-	bool empty = true;
-    state_t child;
+	bool empty = true; // Check if some child was generated
+    state_t child;     // State for create the new child
 
     if (state.terminal())
 		return state.value();
@@ -94,7 +81,7 @@ int minmax(state_t state, int depth, bool use_tt){
 	    }
     }
 
-    if (empty){
+    if (empty){     // No child was generate pass turn
         ++generated;
         score = min(score, maxmin(state, depth - 1, use_tt));
     }
@@ -102,11 +89,11 @@ int minmax(state_t state, int depth, bool use_tt){
 	return score;		
 }
 
-//Funcion maxmin
+//Function maxmin
 int maxmin(state_t state, int depth, bool use_tt){
 
-	bool empty = true;
-    state_t child;
+	bool empty = true;    
+    state_t child;         
 
 	if (state.terminal())
 		return state.value();
@@ -124,7 +111,7 @@ int maxmin(state_t state, int depth, bool use_tt){
         }
     }
 
-    if (empty){
+    if (empty){     // No child was generate pass turn
         ++generated;
         score = max(score, minmax(state, depth - 1, use_tt));
     }
@@ -134,8 +121,8 @@ int maxmin(state_t state, int depth, bool use_tt){
 
 int negamax(state_t state, int depth, int color, bool use_tt = false){
 	
-	bool empty = true;
-    bool is_color = 1 == color;		
+	bool empty = true;             
+    bool is_color = 1 == color;	   // Variable use for the next move
 
 	if (state.terminal())
 		return color * state.value();
@@ -144,8 +131,7 @@ int negamax(state_t state, int depth, int color, bool use_tt = false){
 
 	int alpha = INT_MIN;
 
-	list <state_t> children; 
-	state_t child;
+	state_t child;                 
 
     for( int pos = 0; pos < DIM; ++pos ) {
         if(state.outflank(is_color ,pos)) {
@@ -156,7 +142,7 @@ int negamax(state_t state, int depth, int color, bool use_tt = false){
         }
     }
 
-    if (empty){
+    if (empty){     // No child was generate pass turn
 		++generated;
 		alpha = max(alpha, -negamax(state, depth + 1, -color, use_tt));
 	}
@@ -167,8 +153,8 @@ int negamax(state_t state, int depth, int color, bool use_tt = false){
 
 int negamax(state_t state, int depth, int alpha, int beta, int color, bool use_tt = false){
 
-	bool empty = true;
-    bool is_color = 1 == color;	
+	bool empty = true;             
+    bool is_color = 1 == color;	   
 
 	if (state.terminal())
 		return color * state.value();
@@ -179,8 +165,7 @@ int negamax(state_t state, int depth, int alpha, int beta, int color, bool use_t
 
 	int val = 0;
 	
-	list <state_t> children; 
-	state_t child;
+	state_t child;                 
 
     for( int pos = 0; pos < DIM; ++pos ) {
         if(state.outflank(is_color ,pos)) {
@@ -195,7 +180,7 @@ int negamax(state_t state, int depth, int alpha, int beta, int color, bool use_t
         }
     }
 
-    if (empty){
+    if (empty){     // No child was generate pass turn
 		++generated;
 		val = -negamax(state, depth + 1, -beta, -alpha, -color, use_tt);
         score = max(score,val);
@@ -210,9 +195,11 @@ bool test(state_t state, int score, int color, bool condition, bool use_tt){
     else if (state.terminal() && !condition) 
         return state.value() >= score ? true : false;
 
-    bool is_color = color == 1;
-    bool empty = true; 
-    state_t child;
+    bool is_color = color == 1;     
+    bool empty = true;             
+    state_t child;                  
+    ++expanded;
+
     for( int pos = 0; pos < DIM; ++pos ) {
         if(state.outflank(is_color ,pos)) {
             empty = false;
@@ -225,7 +212,7 @@ bool test(state_t state, int score, int color, bool condition, bool use_tt){
         }
     }
 
-    if (empty) {
+    if (empty) {    // No child was generate pass turn
         ++generated;
         if (is_color && test(state, score, -color, condition, use_tt))
             return true;
@@ -238,8 +225,8 @@ bool test(state_t state, int score, int color, bool condition, bool use_tt){
 
 int scout(state_t state, int depth, int color, bool use_tt = false){
 
-    bool f_child = true;    
-    bool empty = true;
+    bool f_child = true;            // Check if the child is the first one
+    bool empty = true; 
     bool is_color = 1 == color;
     state_t child;
 
@@ -312,7 +299,7 @@ int negascout(state_t state, int depth, int alpha, int beta, int color, bool use
         }        
     }
     
-    if (empty){
+    if (empty){         // No child was generate pass turn
         ++generated;
         score = -negascout(state, depth - 1, -beta, -alpha, -color, use_tt);
         alpha = max(alpha, score);
