@@ -15,9 +15,9 @@
 
     La representación del juego viene dado por 4 matrices donde cada una 
 representa respectivamente las filas, colummnas, la diagonal principal 
-(izquierda a derecha) y la diagonal secundaria(derecha a izquierda). 
-Cada matriz contiene 32 elementos horizontales(filas) debido a que no contamos
-las 4 piezas que ya estan colocadas al principio del juego, cada una de estas 
+(izquierda a derecha) y la diagonal secundaria (derecha a izquierda). Cada 
+matriz contiene 32 elementos horizontales(filas) debido a que no contamos las
+4 piezas que ya estan colocadas al principio del juego, cada una de estas 
 contiene 7 elementos verticales(columnas) debido a las 6 piezas que podrian 
 estar en el tablero (6x6) y el último elemento significa que me salí del 
 tablero representado con el -1. Cabe destacar que en las diagonales es posible 
@@ -44,56 +44,56 @@ es el resultado esperado. Esto se debe a que recorre todos los nodos hasta
 llegar a la solución, comparando los valores dados, dependiendo de si el nodo 
 es un nodo máximo o mínimo, a traves de la evaluacion de dos funciones que se 
 llaman recursivamente, la una a la otra. De modo que por la presencia de esta 
-evaluacion doblemente recursiva se gasta mas tiempo de computo que en los demas 
-algoritmos.
+evaluacion doblemente recursiva se gasta mas tiempo de computo que en los 
+demas algoritmos.
 
 --- Versión Negamax de Minmax/Maxmin ---
 
     Es un poco mejor que Minmax-Maxmin, pero no por mucho, lo cual es obvio en 
 vista que es práctimante el mismo algoritmo solo que aprovechando la propiedad 
 max{a,b} == -min{-a,-b}, se deja todo expresado en una sola función en vez de 
-dos. Por lo que se mejora una poco el tiempo que tarda en conseguir el valor del 
-juego, al depender de la evalución de una sola funcion, aun si todavia se estan
-recorriendo todos los nodos.
+dos. Por lo que se mejora una poco el tiempo que tarda en conseguir el valor 
+del juego, al depender de la evalución de una sola funcion, aun si todavia se 
+estan recorriendo todos los nodos.
 
 --- Versión Negamax de Minmax/Maxmin con poda alpha-beta ---
 
     Esta es la versión mejorada de negamax, este algoritmo consiste en tener 
-dos valores, uno máximo para el jugador Max(Negras) y uno mínimo para el jugador
-Min(blancas), que ira comparando los nodos que se van explorando, para lograr 
-saber cuando se pueden podar ciertas ramas del árbol y asi explorar una cantidad
-menor de nodos. Por los resultados se ve que su mejora fue muy considerable 
-comparado con los dos algoritmos anteriores. Esto se nota cuando analizamos los 
-resultados arrojados, viendo que desde cierto nivel en este algoritmo, el numero
-de expandidos es menor que el presentado en los resultados de los algoritmos 
-anteriores, por lo que se efectuan menos llamadas recursivas, mejorando asi el 
-tiempo de computo requerido para encontrar el valor del juego.
+dos valores, uno máximo para el jugador Max(Negras) y uno mínimo para el 
+jugador Min(blancas), que ira comparando los nodos que se van explorando, para 
+lograr saber cuando se pueden podar ciertas ramas del árbol y asi explorar una 
+cantidad menor de nodos. Por los resultados se ve que su mejora fue muy 
+considerable comparado con los dos algoritmos anteriores. Esto se nota cuando 
+analizamos los resultados arrojados, viendo que desde cierto nivel en este 
+algoritmo, el numero de expandidos es menor que el presentado en los 
+resultados de los algoritmos anteriores, por lo que se efectuan menos llamadas 
+recursivas, mejorando asi el tiempo de computo requerido para encontrar el 
+valor del juego.
 
 --- Scout ---
 
-    En este algoritmo se rata de reducir el camino buscado, viendo si los hijos 
-pueden tener un mejor valor del que ya se tiene, dependiendo de si es un nodo 
-minimo o un nodo maximo, resultando en un podado mas grande que el algoritmo 
-anterior, aun si debido al test o prueba que hace se esten evaluando mas estados
-en ciertos niveles que en otros, lo cual podemos notar en el numero de generados
-de los primeros niveles del resultado. Pero en los niveles mas inferiores 
-podemos verificar que ya teniendo un valor calculado que se acerca al esperado, 
-el cual va pasando en cada llamada del test o prueba; tanto el numero de 
-generados como el de expandidos presenta una reduccion significativa que influye
-a la vez en el tiempo de computo. Otorgando un mejor rendimiento en el presente 
-algoritmo en comparacion a los anteriores, ya que se logra llegar a un nivel mas
-abajo.
+    En este algoritmo se trata de reducir el camino buscado, viendo si los 
+hijos pueden tener un mejor valor del que ya se tiene, dependiendo de si es un 
+nodo minimo o un nodo maximo, resultando en un podado mas grande que el 
+algoritmo anterior, aun si debido al test o prueba que hace, se esten 
+evaluando mas estados en ciertos niveles que en otros, lo cual podemos notar 
+en el numero de generados de los primeros niveles del resultado. Pero en los 
+niveles mas inferiores podemos verificar que ya teniendo un valor calculado 
+que se acerca al esperado, el cual va pasando en cada llamada del test o 
+prueba; tanto el numero de generados como el de expandidos presenta una 
+reduccion significativa que influye a la vez en el tiempo de computo. 
+Otorgando un mejor rendimiento en el presente algoritmo en comparacion a los 
+anteriores, ya que se logra llegar a un nivel mas abajo.
 
 --- Negascout ---
 
     Este algoritmo al igual que la versión negamax con poda alpha-beta, guarda 
-dos valores, uno máximo para el jugador Max(Negras) y uno mínimo para el jugador
-Min(blancas), que va comparando de acuerdo a la estrategia utilizada por scout
-con el valor respectivo. Esto resulta en la mayoria de los casos, en un podado 
-mayor al de scout y alpha-beta pruning, debido a que combina las ventajas de las
-dos estrategias. Esto lo podemos notar en la mejora de tiempo que se da, debido
-a que se expande un poco mas, podando las ramas; en vez de realizar tantas 
-verificaciones repetidas de estados como lo hacia scout con el test, si 
-comparamos el numero de generados y expandidos de los dos algoritmos.
+dos valores, uno máximo para el jugador Max(Negras) y uno mínimo para el 
+jugador Min(blancas), que va comparando de acuerdo a la estrategia utilizada 
+por scout con el valor respectivo. Esto resulta, en la mayoria de los casos, en un podado mayor al de scout y alpha-beta pruning, debido a que combina las 
+ventajas de las dos estrategias. Esto lo podemos notar en la mejora de tiempo 
+que se da, debido a que se expande un poco mas, podando las ramas; en vez de 
+realizar tantas verificaciones repetidas de estados como lo hacia scout con el 
+test, si comparamos el numero de generados y expandidos de los dos algoritmos.
 
 -------------------------------------------------------------------------------
