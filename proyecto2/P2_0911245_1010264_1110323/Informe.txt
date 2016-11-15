@@ -80,11 +80,11 @@ algoritmo anterior, aun si debido al test o prueba que hace, se esten
 evaluando mas estados en ciertos niveles que en otros, lo cual podemos notar 
 en el numero de generados y expandidos de los primeros niveles del resultado. 
 Pero en los niveles mas inferiores podemos verificar que ya teniendo un valor 
-calculado que se acerca al esperado, el cual va pasando en cada llamada del test
-o prueba; tanto el numero de generados como el de expandidos presenta una 
+calculado que se acerca al esperado, el cual va pasando en cada llamada del 
+test o prueba; tanto el numero de generados como el de expandidos presenta una 
 reduccion significativa que influye directamente en una mejora del tiempo de 
-computo. Otorgando un mejor rendimiento en el presente algoritmo, en comparacion
-a los anteriores, ya que se logra llegar a un nivel mas abajo.
+computo. Otorgando un mejor rendimiento en el presente algoritmo, en 
+comparacion a los anteriores, ya que se logra llegar a un nivel mas abajo.
 
 --- Negascout ---
 
@@ -94,11 +94,11 @@ jugador Min(blancas), que va comparando junto a la estrategia utilizada
 por scout con el valor correspondiente en cada jugada. Esto resulta, en la 
 mayoria de los casos, en un podado mayor al de scout y alpha-beta pruning, 
 debido a que combina las ventajas de las dos estrategias, llegando a un 
-equilibrio en cuanto a los casos en los que podrian presentar desventajas. Esto 
-lo podemos notar en la mejora de tiempo que se da, debido a que desde cierto 
-nivel se minimizan tanto las expansiones como el numero de generados con 
-respecto al algoritmo de scout, llegando al punto en el que se hace una poda 
-considerablemente mejor, mientras que se realizan ademas mucho menos recorridos
-y verificaciones. 
+equilibrio en cuanto a los casos en los que podrian presentar desventajas. 
+Esto lo podemos notar en la mejora de tiempo que se da, debido a que desde 
+cierto nivel se minimizan tanto las expansiones como el numero de generados 
+con respecto al algoritmo de scout, llegando al punto en el que se hace una 
+poda considerablemente mejor, mientras que se realizan ademas mucho menos 
+recorridos y verificaciones. 
 
 -------------------------------------------------------------------------------
