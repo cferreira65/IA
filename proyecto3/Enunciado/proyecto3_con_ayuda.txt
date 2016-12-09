@@ -143,7 +143,7 @@ Si n=2, se deben agregar las formulas:
 [q(i,j,n) /\ q(i,j,e)] v [q(i,j,n) /\ q(i,j,s)] v [q(i,j,n) /\ q(i,j,w)] v [q(i,j,e) /\ q(i,j,s)] v [q(i,j,e) /\ q(i,j,w)] v [q(i,j,s) /\ q(i,j,w)]
 
 # CNF
-
+[q(i,j,n) v q(i,j,e) v q(i,j,s)] /\ [q(i,j,n) v q(i,j,e) v q(i,j,w)] /\ [q(i,j,n) v q(i,j,e) v q(i,j,w) v q(i,j,s)] /\ [q(i,j,n) v q(i,j,s) v q(i,j,w)] /\ [q(i,j,e) v q(i,j,s) v q(i,j,w)]
 #
 -q(i,j,n) v -q(i,j,e) v -q(i,j,s)
 -q(i,j,n) v -q(i,j,e) v -q(i,j,w)
@@ -154,6 +154,10 @@ Si n=2, se deben agregar las formulas:
 Si n=3, se deben agregar las formulas:
 
 [q(i,j,n) /\ q(i,j,e) /\ q(i,j,s)] v [q(i,j,e) /\ q(i,j,s) /\ q(i,j,w)] v [q(i,j,s) /\ q(i,j,w) /\ q(i,j,n)] v [q(i,j,w) /\ q(i,j,n) /\ q(i,j,e)]
+
+# CNF
+[q(i,j,n) v q(i,j,e) v q(i,j,s) v q(i,j,w)] /\ [q(i,j,n) v q(i,j,e) v q(i,j,s)] /\ [q(i,j,n) v q(i,j,e) v q(i,j,w)] /\ [q(i,j,n) v q(i,j,e)] /\ [q(i,j,n) v q(i,j,s) v q(i,j,w)] /\ [q(i,j,n) v q(i,j,s)] /\ [q(i,j,n) v q(i,j,w)] /\ [q(i,j,e) v q(i,j,s) v q(i,j,w)] /\ [q(i,j,e) v q(i,j,s)] /\ [q(i,j,e) v q(i,j,w)] /\ [q(i,j,s) v q(i,j,w)]
+#
 
 -q(i,j,n) v -q(i,j,e) v -q(i,j,s) v -q(i,j,w)
 
