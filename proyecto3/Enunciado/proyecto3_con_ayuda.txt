@@ -99,22 +99,22 @@ Para toda celda c=(i,j) con 1 <= i < N y 1 <= j <= M,
 q(i,j,e) <=> q(i+1,j,w)
 
 # CNF
+[q(i,j,e) => q(i+1,j,w)] /\ [q(i,j,e) <= q(i+1,j,w)]
 
-# [q(i,j,e) => q(i+1,j,w)] /\ [q(i,j,e) <= q(i+1,j,w)]
-
-# [-q(i,j,e) \/ q(i+1,j,w)] /\ [q(i,j,e) \/ -q(i+1,j,w)]
+[-q(i,j,e) \/ q(i+1,j,w)] /\ [q(i,j,e) \/ -q(i+1,j,w)]
+#
 
 Para toda celda c=(i,j) con 1 <= i <= N y 1 <= j < M,
 
 q(i,j,s) <=> q(i,j+1,n)
 
 # CNF
+[q(i,j,s) <=> q(i,j+1,n)]
 
-# [q(i,j,s) <=> q(i,j+1,n)]
+[q(i,j,s) => q(i,j+1,n)] /\ [q(i,j,s) <= q(i,j+1,n)]
 
-# [q(i,j,s) => q(i,j+1,n)] /\ [q(i,j,s) <= q(i,j+1,n)]
-
-# [-q(i,j,s) \/ q(i,j+1,n)] /\ [q(i,j,s) \/ -q(i,j+1,n)]
+[-q(i,j,s) \/ q(i,j+1,n)] /\ [q(i,j,s) \/ -q(i,j+1,n)]
+#
 
 Cláusulas tipo 1
 ----------------
@@ -145,6 +145,7 @@ Si n=2, se deben agregar las formulas:
 # CNF
 [q(i,j,n) v q(i,j,e) v q(i,j,s)] /\ [q(i,j,n) v q(i,j,e) v q(i,j,w)] /\ [q(i,j,n) v q(i,j,e) v q(i,j,w) v q(i,j,s)] /\ [q(i,j,n) v q(i,j,s) v q(i,j,w)] /\ [q(i,j,e) v q(i,j,s) v q(i,j,w)]
 #
+
 -q(i,j,n) v -q(i,j,e) v -q(i,j,s)
 -q(i,j,n) v -q(i,j,e) v -q(i,j,w)
 -q(i,j,e) v -q(i,j,s) v -q(i,j,w)
@@ -182,23 +183,50 @@ Para cada celda c=(1,j) con 1 <= j <= M en el borde izquierdo,
 
 -q(1,j,w) <=> z(1,j)
 
+# CNF
+[-q(1,j,w) => z(1,j)] /\ [-q(1,j,w) <= z(1,j)]
+
+[q(1,j,w) v z(1,j)] /\ [-q(1,j,w) v -z(1,j)]
+#
+
 Para cada celda c=(N,j) con 1 <= j <= M en el borde derecho,
 
 -q(N,j,e) <=> z(N,j)
+
+# CNF
+[-q(N,j,e) => z(N,j)] /\ [-q(N,j,e) <= z(N,j)]
+
+[q(N,j,e) v z(N,j)] /\ [-q(N,j,e) v -z(N,j)]
+#
 
 Para cada celda c=(i,1) con 1 <= i <= N en el borde inferior,
 
 -q(i,1,n) <=> z(i,1)
 
+#CNF
+[-q(i,1,n) => z(i,1)] /\ [-q(i,1,n) <= z(i,1)]
+
+[q(i,1,n) v z(i,1)] /\ [-q(i,1,n) v -z(i,1)]
+#
+
 Para cada celda c=(i,M) con 1 <= i <= N en el borde superior,
 
 -q(i,M,s) <=> z(i,M)
+
+# CNF
+[-q(i,M,s) => z(i,M)] /\ [-q(i,M,s) <= z(i,M)]
+
+[q(i,M,s) v z(i,M)] /\ [-q(i,M,s) v -z(i,M)]
+#
 
 Para las celdas c=(i,j) con 1 < i < N y 1 < j < M, que no están
 en ningún borde, definimos:
 
 z(i,j) <=> [-q(i,j,s) & z(i,j+1)] v [-q(i,j,e) & z(i+1,j)] v [-q(i,j,n) & z(i,j-1)] v [-q(i,j,w) & z(i-1,j)]
 
+# CNF
+[-z(i,j) v -q(i,j,s) v -q(i,j,e) v -q(i,j,n) v -q(i,j,w)] /\ [-z(i,j) v -q(i,j,s) v -q(i,j,e) v -q(i,j,n) v z(i-1,j)] /\ [-z(i,j) v -q(i,j,s) v -q(i,j,e) v z(i,j-1) v -q(i,j,w)] /\ [-z(i,j) v -q(i,j,s) v -q(i,j,e) v z(i,j-1) v z(i-1,j)] /\ [-z(i,j) v -q(i,j,s) v z(i+1,j) v -q(i,j,n) v -q(i,j,w)] /\ [-z(i,j) v -q(i,j,s) v z(i+1,j) v -q(i,j,n) v z(i-1,j)] /\ [-z(i,j) v -q(i,j,s) v z(i+1,j) v z(i,j-1) v -q(i,j,w)] /\ [-z(i,j) v -q(i,j,s) v z(i+1,j) v z(i,j-1) v z(i-1,j)] /\ [-z(i,j) v z(i,j+1) v -q(i,j,e) v -q(i,j,n) v -q(i,j,w)] /\ [-z(i,j) v z(i,j+1) v -q(i,j,e) v -q(i,j,n) v z(i-1,j)] /\ [-z(i,j) v z(i,j+1) v -q(i,j,e) v z(i,j-1) v -q(i,j,w)] /\ [-z(i,j) v z(i,j+1) v -q(i,j,e) v z(i,j-1) v z(i-1,j)] /\ [-z(i,j) v z(i,j+1) v z(i+1,j) v -q(i,j,n) v -q(i,j,w)] /\ [-z(i,j) v z(i,j+1) v z(i+1,j) v -q(i,j,n) v z(i-1,j)] /\ [-z(i,j) v z(i,j+1) v z(i+1,j) v z(i,j-1) v -q(i,j,w)] /\ [-z(i,j) v z(i,j+1) v z(i+1,j) v z(i,j-1) v z(i-1,j)] /\ [q(i,j,s) v -z(i,j+1) v z(i,j)] /\ [q(i,j,e) v -z(i+1,j) v z(i,j)] /\ [q(i,j,n) v -z(i,j-1) v z(i,j)] /\ [q(i,j,w) v -z(i-1,j) v z(i,j)]
+#
 
 Cláusulas tipo 3
 ----------------
@@ -217,10 +245,39 @@ por el lado norte, entonces:
 
 r(c,c') & -q(c',n) => r(c,c'')
 
+# CNF
+-[r(c,c') & -q(c',n)] v r(c,c'')
+
+-r(c,c') v q(c',n) v r(c,c'')
+#
+
 ya que si c' es alcanzable desde c y no existe un segmento entre c' y c'',
 entonces c'' también debe ser alcanzable desde c. Similarmente definimos
 fórmulas para las otras direcciones e, s, y w.
 
+r(c,c') & -q(c',e) => r(c,c'')
+
+# CNF
+-[r(c,c') & -q(c',e)] v r(c,c'')
+
+-r(c,c') v q(c',e) v r(c,c'')
+#
+
+r(c,c') & -q(c',s) => r(c,c'')
+
+# CNF
+-[r(c,c') & -q(c',s)] v r(c,c'')
+
+-r(c,c') v q(c',s) v r(c,c'')
+#
+
+r(c,c') & -q(c',w) => r(c,c'')
+
+# CNF
+-[r(c,c') & -q(c',w)] v r(c,c'')
+
+-r(c,c') v q(c',w) v r(c,c'')
+#
 
 Cláusulas tipo 4
 ----------------
@@ -230,6 +287,11 @@ que ser alcazables la una de la otra. Para cada par de celdas c y c':
 
 z(c) & z(c') => r(c,c')
 
+# CNF
+-[z(c) & z(c')] v r(c,c')
+
+-z(c) v -z(c') v r(c,c')
+#
 
 La teoría proposicional entonces la conforman todas las cláusulas de tipos
 0, 1, 2, 3 y 4. Para un juego de dimensión n = NxM, el número de cláusulas
