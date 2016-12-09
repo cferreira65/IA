@@ -10,8 +10,8 @@ int q(int i, int j, char d){
     switch(d){
         case 'n' : return (i + (j - 1) * n );
         case 's' : return (i + j * n);
-        case 'e' : return ((i - 1) * (m + 1) + j + n * (m + 1) + 1);
-        case 'w' : return ((i - 1) * (m + 1) + j + n * (m + 1));
+        case 'e' : return (i + (j - 1) * (m + 1) + n * (m + 1) + 1);
+        case 'w' : return (i + (j - 1) * (m + 1) + n * (m + 1));
     }
     return 0;
 }
@@ -25,17 +25,20 @@ int main(int argc, char const *argv[])
 {
     n = atoi(argv[1]);
     m = atoi(argv[2]);
-    for (int j = 1 ; j <= n; ++j){
-        for (int i = 1 ; i <= m; ++i){
-            cout << q(i,j,'w') << '\n';
+    int var = n * m + (n+1) * m + n * (m+1);
+    int cla = 0; 
+    cout << "p cnf " << var << ' ' << cla << '\n';
+
+    for (int j = 1 ; j <= m; ++j){
+        for (int i = 1 ; i <= n; ++i){
+            cout << -q(i,j,'e') << ' ' << q(i+1,j,'w') << " 0\n";
+            cout << q(i,j,'e') << ' ' << -q(i+1,j,'w') << " 0\n";
+            cout << -q(i,j,'s') << ' ' << q(i,j+1,'n') << " 0\n";
+            cout << q(i,j,'s') << ' ' << -q(i,j+1,'n') << " 0\n";
+            
         }
     }
-    cout << "--------------\n";
-    for (int j = 1 ; j <= n; ++j){
-        for (int i = 1 ; i <= m; ++i){
-            cout << z(i,j) << '\n';
-        }
-    }
+    
 
     return 0;
 }
