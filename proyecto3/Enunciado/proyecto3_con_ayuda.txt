@@ -98,10 +98,23 @@ Para toda celda c=(i,j) con 1 <= i < N y 1 <= j <= M,
 
 q(i,j,e) <=> q(i+1,j,w)
 
+# CNF
+
+# [q(i,j,e) => q(i+1,j,w)] /\ [q(i,j,e) <= q(i+1,j,w)]
+
+# [-q(i,j,e) \/ q(i+1,j,w)] /\ [q(i,j,e) \/ -q(i+1,j,w)]
+
 Para toda celda c=(i,j) con 1 <= i <= N y 1 <= j < M,
 
-q(i,j,n) <=> q(i,j+1,s)
+q(i,j,s) <=> q(i,j+1,n)
 
+# CNF
+
+# [q(i,j,s) <=> q(i,j+1,n)]
+
+# [q(i,j,s) => q(i,j+1,n)] /\ [q(i,j,s) <= q(i,j+1,n)]
+
+# [-q(i,j,s) \/ q(i,j+1,n)] /\ [q(i,j,s) \/ -q(i,j+1,n)]
 
 Cláusulas tipo 1
 ----------------
@@ -125,7 +138,32 @@ q(i,j,n) v q(i,j,e) v q(i,j,s) v q(i,j,w)
 -q(i,j,e) v -q(i,j,w)
 -q(i,j,s) v -q(i,j,w)
 
+Si n=2, se deben agregar las formulas:
 
+[q(i,j,n) /\ q(i,j,e)] v [q(i,j,n) /\ q(i,j,s)] v [q(i,j,n) /\ q(i,j,w)] v [q(i,j,e) /\ q(i,j,s)] v [q(i,j,e) /\ q(i,j,w)] v [q(i,j,s) /\ q(i,j,w)]
+
+# CNF
+
+#
+-q(i,j,n) v -q(i,j,e) v -q(i,j,s)
+-q(i,j,n) v -q(i,j,e) v -q(i,j,w)
+-q(i,j,e) v -q(i,j,s) v -q(i,j,w)
+-q(i,j,e) v -q(i,j,s) v -q(i,j,n)
+-q(i,j,s) v -q(i,j,w) v -q(i,j,n)
+
+Si n=3, se deben agregar las formulas:
+
+[q(i,j,n) /\ q(i,j,e) /\ q(i,j,s)] v [q(i,j,e) /\ q(i,j,s) /\ q(i,j,w)] v [q(i,j,s) /\ q(i,j,w) /\ q(i,j,n)] v [q(i,j,w) /\ q(i,j,n) /\ q(i,j,e)]
+
+-q(i,j,n) v -q(i,j,e) v -q(i,j,s) v -q(i,j,w)
+
+Si n=4, se deben agregar las formulas:
+
+q(i,j,n)
+q(i,j,e)
+q(i,j,s)
+q(i,j,w)
+ 
 Cláusulas tipo 2
 ----------------
 
@@ -146,16 +184,16 @@ Para cada celda c=(N,j) con 1 <= j <= M en el borde derecho,
 
 Para cada celda c=(i,1) con 1 <= i <= N en el borde inferior,
 
--q(i,1,s) <=> z(i,1)
+-q(i,1,n) <=> z(i,1)
 
 Para cada celda c=(i,M) con 1 <= i <= N en el borde superior,
 
--q(i,M,n) <=> z(i,M)
+-q(i,M,s) <=> z(i,M)
 
 Para las celdas c=(i,j) con 1 < i < N y 1 < j < M, que no están
 en ningún borde, definimos:
 
-z(i,j) <=> [-q(i,j,n) & z(i,j+1)] v [-q(i,j,e) & z(i+1,j)] v [-q(i,j,s) & z(i,j-1)] v [-q(i,j,w) & z(i-1,j)]
+z(i,j) <=> [-q(i,j,s) & z(i,j+1)] v [-q(i,j,e) & z(i+1,j)] v [-q(i,j,n) & z(i,j-1)] v [-q(i,j,w) & z(i-1,j)]
 
 
 Cláusulas tipo 3
