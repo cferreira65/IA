@@ -144,27 +144,27 @@ int main(int argc, char const *argv[])
                 for (int x = 1; x <= n; ++x){
                     if (y-1 != 0){
                         //-r(c,c') v q(c',n) v r(c,c'')
-                        myfile << -r(i,j,x,y) << ' ' << q(i,j,'n') << r(i,j,x,y-1) << " 0\n";
+                        myfile << -r(i,j,x,y) << ' ' << q(i,j,'n') << ' ' << r(i,j,x,y-1) << " 0\n";
                     }
 
                     if (x != n){
                         //-r(c,c') v q(c',e) v r(c,c'')
-                        myfile << -r(i,j,x,y) << ' ' << q(i,j,'e') << r(i,j,x+1,y) << " 0\n";
+                        myfile << -r(i,j,x,y) << ' ' << q(i,j,'e') << ' ' << r(i,j,x+1,y) << " 0\n";
                     }
 
                     if (y != m){
                         //-r(c,c') v q(c',s) v r(c,c'')
-                        myfile << -r(i,j,x,y) << ' ' << q(i,j,'s') << r(i,j,x,y+1) << " 0\n";
+                        myfile << -r(i,j,x,y) << ' ' << q(i,j,'s') << ' ' << r(i,j,x,y+1) << " 0\n";
                     }
 
                     if (x-1 != 0){
                         //-r(c,c') v q(c',w) v r(c,c'')
-                        myfile << -r(i,j,x,y) << ' ' << q(i,j,'w') << r(i,j,x-1,y) << " 0\n";
+                        myfile << -r(i,j,x,y) << ' ' << q(i,j,'w') << ' ' << r(i,j,x-1,y) << " 0\n";
                     }
 
                     myfile << "c Tipo 4\n";
                     //-z(c) v -z(c') v r(c,c')
-                    myfile << -z(i,j) << ' ' << -z(x,y) << r(i,j,x,y) << " 0\n";
+                    myfile << -z(i,j) << ' ' << -z(x,y) << ' ' << r(i,j,x,y) << " 0\n";
 
                 }
             }
