@@ -149,7 +149,6 @@ Si n=2, se deben agregar las formulas:
 -q(i,j,n) v -q(i,j,e) v -q(i,j,s)
 -q(i,j,n) v -q(i,j,e) v -q(i,j,w)
 -q(i,j,e) v -q(i,j,s) v -q(i,j,w)
--q(i,j,e) v -q(i,j,s) v -q(i,j,n)
 -q(i,j,s) v -q(i,j,w) v -q(i,j,n)
 
 Si n=3, se deben agregar las formulas:
@@ -296,5 +295,43 @@ z(c) & z(c') => r(c,c')
 La teoría proposicional entonces la conforman todas las cláusulas de tipos
 0, 1, 2, 3 y 4. Para un juego de dimensión n = NxM, el número de cláusulas
 es O(n + n + n + n^2 + n^2) = O(n^2).
+
+Cláusulas tipo 5
+----------------
+
+Ponemos que si existe un segmento perteneciente a una celda interna, entonces
+debe existir un segmento adyacente por cada dos puntos de ese segmento(para 
+1<i<N y 1<j<N):
+
+q(i,j,n) /\ z(i,j) => [q(i-1,j,n) v q(i-1,j,e) v q(i,j+1,w)] /\ [q(i+1,j,n) v q(i+1,j,w) v q(i,j+1,e)]
+
+q(i,j,s) /\ z(i,j) => [q(i-1,j,s) v q(i-1,j,e) v q(i,j+1,w)] /\ [q(i+1,j,s) v q(i+1,j,w) v q(i,j+1,e)]
+
+q(i,j,e) /\ z(i,j) => [q(i,j-1,s) v q(i,j-1,e) v q(i+1,j,n)] /\ [q(i,j+1,n) v q(i,j+1,e) v q(i+1,j,s)]
+
+q(i,j,w) /\ z(i,j) => [q(i,j-1,s) v q(i,j-1,w) v q(i-1,j,n)] /\ [q(i,j+1,n) v q(i,j+1,w) v q(i-1,j,s)]
+
+Para las esquinas hago lo mismo:
+
+# Superior Izquierda
+q(1,1,n) => q(1,1,w) /\ [q(2,1,n) v q(2,1,w)]
+
+q(1,1,w) => q(1,1,n) /\ [q(1,2,n) v q(1,2,w)] 
+
+# Inferior Izquierda
+q(1,M,w) => q(1,M,s) /\ [q(1,M-1,s) v q(1,M-1,w)]
+
+q(1,M,s) => q(1,M,w) /\ [q(2,M,s) v q(2,M,w)]
+
+#Superior derecha
+q(N,1,n) => q(N,1,e) /\ [q(N-1,1,n) v q(N-1,1,e)]
+
+q(N,1,e) => q(N,1,n) /\ [q(N,2,n) v q(N,2,e)]
+
+# Inferior Derecha
+q(N,M,s) => q(N,M,e) /\ [q(N-1,M,s) v q(N-1,M,e)]
+
+q(N,M,e) => q(N,M,s) /\ [q(N,M-1,s) v q(N,M-1,e)]
+
 
 
