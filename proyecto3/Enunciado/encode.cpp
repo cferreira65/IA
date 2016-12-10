@@ -6,6 +6,7 @@ using namespace std;
 
 int n;
 int m;
+int seg;
 
 int q(int i, int j, char d){
 
@@ -19,8 +20,14 @@ int q(int i, int j, char d){
 }
 
 int z(int i, int j){
-    int val = (m + 1) * n + m * (n + 1);
-    return (i + (j - 1) * n + val);
+    return (i + (j - 1) * n + seg);
+}
+
+int r(int i, int j, int x, int y){
+    int ncel = n*m;
+    int cel1 = i + (j - 1) * n;
+    int cel2 = x + (y - 1) * n;
+    return ((cel1 - 1) * ncel + cel2 + seg + ncel);
 }
 
 int main(int argc, char const *argv[])
@@ -29,7 +36,8 @@ int main(int argc, char const *argv[])
     ofstream myfile ("encode.cnf");
     in >> n;
     in >> m;
-    int var = n * m + (n+1) * m + n * (m+1);
+    seg = (m + 1) * n + m * (n + 1);
+    int var = n * m + seg;
     int cla = 0; 
     myfile << "p cnf " << var << ' ' << cla << '\n';
     char cel;
@@ -106,6 +114,7 @@ int main(int argc, char const *argv[])
                     myfile << q(i,j,'s') << ' ' << q(i,j,'w') << " 0\n";
                     //-q(i,j,n) v -q(i,j,e) v -q(i,j,s) v -q(i,j,w)
                     myfile << -q(i,j,'n') << ' ' << -q(i,j,'e') << ' ' << -q(i,j,'s') << ' ' << -q(i,j,'w') << " 0\n";
+                    break;
                 case '4' :
                     // q(i,j,n)
                     // q(i,j,e)
@@ -115,11 +124,13 @@ int main(int argc, char const *argv[])
                     myfile << q(i,j,'e') << " 0\n";
                     myfile << q(i,j,'s') << " 0\n";
                     myfile << q(i,j,'w') << " 0\n";
-
+                    break;
 
             }
         }
     }
+    in.close();
+    myfile.close();
     
 
     return 0;
