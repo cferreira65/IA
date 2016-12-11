@@ -409,20 +409,20 @@ q(1,j,s) => [q(1,j,w) v q(1,j+1,w)] /\ [-q(1,j,w) v -q(1,j+1,w)]
 
 q(N,j,e) => [q(N,j-1,s) v q(N,j-1,e)] /\ [-q(N,j-1,s) v -q(N,j-1,e)]
 
-q(N,j,n) => [q(N,j,w) v q(N-1,j,n) v q(N,j-1,w)] /\ [-q(N,j,w) v -q(N-1,j,n)] /\ [-q(N-1,j,n) v -q(N,j-1,w)] /\ [-q(N,j,w) v -q(N,j-1,w)]
+q(N,j,n) => [q(N,j,w) v q(N-1,j,n) v q(N,j-1,w)] /\ [q(N,j,w) v q(N-1,j,n) v q(N,j-1,w)] /\ [-q(N,j,w) v -q(N-1,j,n)] /\ [-q(N-1,j,n) v -q(N,j-1,w)] /\ [-q(N,j,w) v -q(N,j-1,w)] /\ [-q(N,j,w) v -q(N-1,j,n)] /\ [-q(N-1,j,n) v -q(N,j-1,w)] /\ [-q(N,j,w) v -q(N,j-1,w)]
 
 q(N,j,w) => [q(N,j-1,s) v q(N,j-1,w) v q(N-1,j,n)] /\ [-q(N,j-1,s) v -q(N,j-1,w)] /\ [-q(N,j-1,w) v -q(N-1,j,n)] /\ [-q(N,j-1,s) v -q(N-1,j,n)]
 
-q(N,j,s) => [q(N,j,w) v q(N-1,j,s) v q(N,j+1,w)] /\ [-q(N,j,w) v -q(N-1,j,s)] /\ [-q(N-1,j,s) v -q(N,j+1,w)] /\ [-q(N,j,w) v -q(N,j+1,w)]
+q(N,j,s) => [q(N,j,w) v q(N-1,j,s) v q(N,j+1,w)] /\ [q(N,j,w) v q(N-1,j,s) v q(N,j+1,w)] /\ [-q(N,j,w) v -q(N-1,j,s)] /\ [-q(N-1,j,s) v -q(N,j+1,w)] /\ [-q(N,j,w) v -q(N,j+1,w)] /\ [-q(N,j,w) v -q(N-1,j,s)] /\ [-q(N-1,j,s) v -q(N,j+1,w)] /\ [-q(N,j,w) v -q(N,j+1,w)]
 
 # CNF
 [-q(N,j,e) v q(N,j-1,s) v q(N,j-1,e)] /\ [-q(N,j,e) v -q(N,j-1,s) v -q(N,j-1,e)]
 
-[-q(N,j,n) v q(N,j,w) v q(N-1,j,n) v q(N,j-1,w)] /\ [-q(N,j,n) v -q(N,j,w) v -q(N-1,j,n)] /\ [-q(N,j,n) v -q(N-1,j,n) v -q(N,j-1,w)] /\ [-q(N,j,n) v -q(N,j,w) v -q(N,j-1,w)]
+[-q(N,j,n) v q(N,j,w) v q(N-1,j,n) v q(N,j-1,w)] /\ [-q(N,j,n) v q(N,j,w) v q(N-1,j,n) v q(N,j-1,w)] /\ [-q(N,j,n) v -q(N,j,w) v -q(N-1,j,n)] /\ [-q(N,j,n) v -q(N-1,j,n) v -q(N,j-1,w)] /\ [-q(N,j,n) v -q(N,j,w) v -q(N,j-1,w)] /\ [-q(N,j,n) v -q(N,j,w) v -q(N-1,j,n)] /\ [-q(N,j,n) v -q(N-1,j,n) v -q(N,j-1,w)] /\ [-q(N,j,n) v -q(N,j,w) v -q(N,j-1,w)]
 
 [-q(N,j,w) v q(N,j-1,s) v q(N,j-1,w) v q(N-1,j,n)] /\ [-q(N,j,w) v -q(N,j-1,s) v -q(N,j-1,w)] /\ [-q(N,j,w) v -q(N,j-1,w) v -q(N-1,j,n)] /\ [-q(N,j,w) v -q(N,j-1,s) v -q(N-1,j,n)]
 
-[-q(N,j,s) v q(N,j,w) v q(N-1,j,s) v q(N,j+1,w)] /\ [-q(N,j,s) v -q(N,j,w) v -q(N-1,j,s)] /\ [-q(N,j,s) v -q(N-1,j,s) v -q(N,j+1,w)] /\ [-q(N,j,s) v -q(N,j,w) v -q(N,j+1,w)]
+[-q(N,j,s) v q(N,j,w) v q(N-1,j,s) v q(N,j+1,w)] /\ [-q(N,j,s) v q(N,j,w) v q(N-1,j,s) v q(N,j+1,w)] /\ [-q(N,j,s) v -q(N,j,w) v -q(N-1,j,s)] /\ [-q(N,j,s) v -q(N-1,j,s) v -q(N,j+1,w)] /\ [-q(N,j,s) v -q(N,j,w) v -q(N,j+1,w)] /\ [-q(N,j,s) v -q(N,j,w) v -q(N-1,j,s)] /\ [-q(N,j,s) v -q(N-1,j,s) v -q(N,j+1,w)] /\ [-q(N,j,s) v -q(N,j,w) v -q(N,j+1,w)]
 #
 
 # Borde Superior(1 < i < N):
