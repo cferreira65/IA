@@ -533,7 +533,7 @@ int main(int argc, char const *argv[])
         //[-q(i,M,n) v -q(i-1,M,e) v -q(i,M-1,w)]
         myfile << -q(i,m,'n') << ' ' << -q(i-1,m,'e') << ' ' << -q(i,m-1,'w') << " 0\n";
         //*
-
+    //Comente
     }
 
     in.close();
