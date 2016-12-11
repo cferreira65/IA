@@ -7,7 +7,8 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     ifstream in (argv[1]);
-    ofstream out ("out.cnf");
+    ofstream out ;
+    out.open("out.cnf", std::ios::app);
     int n = atoi(argv[2]);
     int m = atoi(argv[3]);
     out << n << ' ';
@@ -48,7 +49,9 @@ int main(int argc, char const *argv[])
         out << hor[i];
         out << ver[i];
     }
-    out << hor[n];
+    out << hor[n]<< "\n";
+    in.close();
+    out.close();
     
     return 0;
 }
