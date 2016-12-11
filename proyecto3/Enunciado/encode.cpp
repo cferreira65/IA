@@ -55,12 +55,17 @@ int main(int argc, char const *argv[])
 
 
         for (int i = 1 ; i <= n; ++i){
-            myfile << "c Tipo 0\n";
-            myfile << -q(i,j,'e') << ' ' << q(i+1,j,'w') << " 0\n";
-            myfile << q(i,j,'e') << ' ' << -q(i+1,j,'w') << " 0\n";
-            myfile << -q(i,j,'s') << ' ' << q(i,j+1,'n') << " 0\n";
-            myfile << q(i,j,'s') << ' ' << -q(i,j+1,'n') << " 0\n";
-            
+            if (i != n) {
+                myfile << "c Tipo 0\n";
+                myfile << -q(i,j,'e') << ' ' << q(i+1,j,'w') << " 0\n";
+                myfile << q(i,j,'e') << ' ' << -q(i+1,j,'w') << " 0\n";
+            }
+            if (j != m) {
+                myfile << "c Tipo 0\n";
+                myfile << -q(i,j,'s') << ' ' << q(i,j+1,'n') << " 0\n";
+                myfile << q(i,j,'s') << ' ' << -q(i,j+1,'n') << " 0\n";
+            }
+
             myfile << "c Tipo 1\n";
             in >> cel;
 
