@@ -384,6 +384,16 @@ int main(int argc, char const *argv[])
         //[-q(N,j,n) v q(N,j,e) v q(N,j-1,e)] /\ [-q(N,j,n) v q(N,j,w) v q(N-1,j,n) v q(N,j-1,w)]
         myfile << -q(n,j,'n') << ' ' << q(n,j,'e') << ' ' << q(n,j-1,'e') << " 0\n";
         myfile << -q(n,j,'n') << ' ' << q(n,j,'w') << ' ' << q(n-1,j,'n') << ' ' << q(n,j-1,'w') << " 0\n";
+        //*
+        //[-q(N,j,n) v -q(N,j,e) v -q(N,j-1,e)]
+        myfile << -q(n,j,'n') << ' ' << -q(n,j,'e') << ' ' << -q(n,j-1,'e') << " 0\n";
+        //[-q(N,j,n) v -q(N,j,w) v -q(N-1,j,n)]
+        myfile << -q(n,j,'n') << ' ' << -q(n,j,'w') << ' ' << -q(n-1,j,'n') << " 0\n";
+        //[-q(N,j,n) v -q(N-1,j,n) v -q(N,j-1,w)]
+        myfile << -q(n,j,'n') << ' ' << -q(n-1,j,'n') << ' ' << -q(n,j-1,'w') << " 0\n";
+        //[-q(N,j,n) v -q(N,j,w) v -q(N,j-1,w)]
+        myfile << -q(n,j,'n') << ' ' << -q(n,j,'w') << ' ' << -q(n,j-1,'w') << " 0\n";
+        //*
         //[-q(N,j,w) v q(N,j+1,n) v q(N,j+1,w) v q(N-1,j,s)] /\ [-q(N,j,w) v q(N,j-1,s) v q(N,j-1,w) v q(N-1,j,n)]
         //myfile << -q(n,j,'w') << ' ' << q(n,j+1,'n') << ' ' << q(n,j+1,'w') << ' ' << q(n-1,j,'s') << " 0\n";<----
         myfile << -q(n,j,'w') << ' ' << q(n,j-1,'s') << ' ' << q(n,j-1,'w') << ' ' << q(n-1,j,'n') << " 0\n";
@@ -398,6 +408,16 @@ int main(int argc, char const *argv[])
         //[-q(N,j,s) v q(N,j,e) v q(N,j+1,e)] /\ [-q(N,j,s) v q(N,j,w) v q(N-1,j,s) v q(N,j+1,w)]
         myfile << -q(n,j,'s') << ' ' << q(n,j,'e') << ' ' << q(n,j+1,'e') << " 0\n";
         myfile << -q(n,j,'s') << ' ' << q(n,j,'w') << ' ' << q(n-1,j,'s') << ' ' << q(n,j+1,'w') << " 0\n";
+        //*
+        //[-q(N,j,s) v -q(N,j,e) v -q(N,j+1,e)]
+        myfile << -q(n,j,'s') << ' ' << -q(n,j,'e') << ' ' << -q(n,j+1,'e') << " 0\n";
+        //[-q(N,j,s) v -q(N,j,w) v -q(N-1,j,s)]
+        myfile << -q(n,j,'s') << ' ' << -q(n,j,'w') << ' ' << -q(n-1,j,'s') << " 0\n";
+        //[-q(N,j,s) v -q(N-1,j,s) v -q(N,j+1,w)]
+        myfile << -q(n,j,'s') << ' ' << -q(n-1,j,'s') << ' ' << -q(n,j+1,'w') << " 0\n";
+        //[-q(N,j,s) v -q(N,j,w) v -q(N,j+1,w)]
+        myfile << -q(n,j,'s') << ' ' << -q(n,j,'w') << ' ' << -q(n,j+1,'w') << " 0\n";
+        //*
 
     }
 
@@ -439,16 +459,48 @@ int main(int argc, char const *argv[])
         //Borde Inferior
         //[-q(i,M,s) v q(i-1,M,s) v q(i-1,M,e)] /\ [-q(i,M,s) v q(i+1,M,s) v q(i+1,M,w)]
         myfile << -q(i,m,'s') << ' ' << q(i-1,m,'s') << ' ' << q(i-1,m,'e') << " 0\n";
-        myfile << -q(i,m,'s') << ' ' << q(i+1,m,'s') << ' ' << q(i+1,m,'w') << " 0\n";
+        //myfile << -q(i,m,'s') << ' ' << q(i+1,m,'s') << ' ' << q(i+1,m,'w') << " 0\n";<----
+        //*
+        //[-q(i,M,s) v -q(i-1,M,s) v -q(i-1,M,e)]
+        myfile << -q(i,m,'s') << ' ' << -q(i-1,m,'s') << ' ' << -q(i-1,m,'e') << " 0\n";
+        //*
         //[-q(i,M,w) v q(i-1,M,s) v q(i,M,s)] /\ [-q(i,M,w) v q(i-1,M,n) v q(i,M-1,s) v q(i,M-1,w)]
         myfile << -q(i,m,'w') << ' ' << q(i-1,m,'s') << ' ' << q(i,m,'s') << " 0\n";
         myfile << -q(i,m,'w') << ' ' << q(i-1,m,'n') << ' ' << q(i,m-1,'s') << ' ' << q(i,m-1,'w') << " 0\n";
+        //*
+        //[-q(i,M,w) v -q(i-1,M,s) v -q(i,M,s)]
+        myfile << -q(i,m,'w') << ' ' << -q(i-1,m,'s') << ' ' << -q(i,m,'s') << " 0\n";
+        //[-q(i,M,w) v -q(i-1,M,n) v -q(i,M-1,s)]
+        myfile << -q(i,m,'w') << ' ' << -q(i-1,m,'n') << ' ' << -q(i,m-1,'s') << " 0\n";
+        //[-q(i,M,w) v -q(i,M-1,s) v -q(i,M-1,w)]
+        myfile << -q(i,m,'w') << ' ' << -q(i,m-1,'s') << ' ' << -q(i,m-1,'w') << " 0\n";
+        //[-q(i,M,w) v -q(i-1,M,n) v -q(i,M-1,w)]
+        myfile << -q(i,m,'w') << ' ' << -q(i-1,m,'n') << ' ' << -q(i,m-1,'w') << " 0\n";
+        //*
         //[-q(i,M,e) v q(i,M,s) v q(i+1,M,s)] /\ [-q(i,M,e) v q(i,M-1,s) v q(i,M-1,e) v q(i+1,M,n)]
         myfile << -q(i,m,'e') << ' ' << q(i,m,'s') << ' ' << q(i+1,m,'s') << " 0\n";
         myfile << -q(i,m,'e') << ' ' << q(i,m-1,'s') << ' ' << q(i,m-1,'e') << ' ' << q(i+1,m,'n') << " 0\n";
+        //*
+        //[-q(i,M,e) v -q(i,M,s) v -q(i+1,M,s)]
+        myfile << -q(i,m,'e') << ' ' << -q(i,m,'s') << ' ' << -q(i+1,m,'s') << " 0\n";
+        //[-q(i,M,e) v -q(i,M-1,s) v -q(i,M-1,e)]
+        myfile << -q(i,m,'e') << ' ' << -q(i,m-1,'s') << ' ' << -q(i,m-1,'e') << " 0\n";
+        //[-q(i,M,e) v -q(i,M-1,e) v -q(i+1,M,n)]
+        myfile << -q(i,m,'e') << ' ' << -q(i,m-1,'e') << ' ' << -q(i+1,m,'n') << " 0\n";
+        //[-q(i,M,e) v -q(i,M-1,s) v -q(i+1,M,n)]
+        myfile << -q(i,m,'e') << ' ' << -q(i,m-1,'s') << ' ' << -q(i+1,m,'n') << " 0\n";
+        //*
         //[-q(i,M,n) v q(i-1,M,e) v q(i-1,M,n) v q(i,M-1,w)] /\ [-q(i,M,n) v q(i+1,M,w) v q(i+1,M,n) v q(i,M-1,e)]
         myfile << -q(i,m,'n') << ' ' << q(i-1,m,'e') << ' ' << q(i-1,m,'n') << ' ' << q(i,m-1,'w') << " 0\n";
-        myfile << -q(i,m,'n') << ' ' << q(i+1,m,'w') << ' ' << q(i+1,m,'n') << ' ' << q(i,m-1,'e') << " 0\n";
+        //myfile << -q(i,m,'n') << ' ' << q(i+1,m,'w') << ' ' << q(i+1,m,'n') << ' ' << q(i,m-1,'e') << " 0\n";<----
+        //*
+        //[-q(i,M,n) v -q(i-1,M,e) v -q(i-1,M,n)]
+        myfile << -q(i,m,'n') << ' ' << -q(i-1,m,'e') << ' ' << -q(i-1,m,'n') << " 0\n";
+        //[-q(i,M,n) v -q(i-1,M,n) v -q(i,M-1,w)]
+        myfile << -q(i,m,'n') << ' ' << -q(i-1,m,'n') << ' ' << -q(i,m-1,'w') << " 0\n";
+        //[-q(i,M,n) v -q(i-1,M,e) v -q(i,M-1,w)]
+        myfile << -q(i,m,'n') << ' ' << -q(i-1,m,'e') << ' ' << -q(i,m-1,'w') << " 0\n";
+        //*
 
     }
 
