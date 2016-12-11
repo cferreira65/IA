@@ -257,7 +257,7 @@ int main(int argc, char const *argv[])
     myfile << -q(1,1,'w') << ' ' << q(1,2,'n') << ' ' << q(1,2,'w') << " 0\n";
 
     //[-q(1,M,w) v q(1,M,s)] /\ [-q(1,M,w) v q(1,M-1,s) v q(1,M-1,w)]
-    myfile << -q(1,m,'w') << ' ' << q(1,m,'n') << " 0\n";
+    myfile << -q(1,m,'w') << ' ' << q(1,m,'s') << " 0\n";
     myfile << -q(1,m,'w') << ' ' << q(1,m-1,'s') << ' ' << q(1,m-1,'w') << " 0\n";
     //[-q(1,M,s) v q(1,M,w)] /\ [-q(1,M,s) v q(2,M,s) v q(2,M,w)]
     myfile << -q(1,m,'s') << ' ' << q(1,m,'w') << " 0\n";
