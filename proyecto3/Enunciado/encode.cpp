@@ -233,7 +233,7 @@ int main(int argc, char const *argv[])
             //[-q(i,j,n) v q(i+1,j,n) v q(i+1,j,w) v q(i,j-1,e)]
             myfile << -q(i,j,'n') << ' ' << q(i+1,j,'n') << ' ' << q(i+1,j,'w') << ' ' << q(i,j-1,'e') << " 0\n";
             //[-q(i,j,s) v q(i-1,j,s) v q(i-1,j,e) v q(i,j+1,w)] / 
-            myfile << -q(i,j,'s') << ' ' << q(i-1,j,'s') << ' ' << q (i-1,j,'e') << ' ' << q(i,j+1,'w') << " 0\n";
+            myfile << -q(i,j,'s') << ' ' << q(i-1,j,'s') << ' ' << q(i-1,j,'e') << ' ' << q(i,j+1,'w') << " 0\n";
             //[-q(i,j,s) v q(i+1,j,s) v q(i+1,j,w) v q(i,j+1,e)]
             myfile << -q(i,j,'s') << ' ' << q(i+1,j,'s') << ' ' << q(i+1,j,'w') << ' ' << q(i,j+1,'e') << " 0\n";
             //[-q(i,j,w) v q(i,j-1,s) v q(i,j-1,w) v q(i-1,j,n)] /
