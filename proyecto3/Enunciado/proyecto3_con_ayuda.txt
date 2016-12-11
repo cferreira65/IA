@@ -361,7 +361,7 @@ q(1,M,s) => q(1,M,w) /\ [q(2,M,s) v q(2,M,w)] /\ [-q(2,M,s) v -q(2,M,w)]
 q(N,1,n) => q(N,1,e) /\ [q(N-1,1,n) v q(N-1,1,e)] /\ [-q(N-1,1,n) v -q(N-1,1,e)]
 
 # CNF
-[-q(N,1,n) v q(N,1,e)] /\ [-q(N,1,n) v q(N-1,1,n) v q(N-1,1,e)] /\ [-q(N,1,n) v q(N-1,1,n) v q(N-1,1,e)]
+[-q(N,1,n) v q(N,1,e)] /\ [-q(N,1,n) v q(N-1,1,n) v q(N-1,1,e)] /\ [-q(N,1,n) v -q(N-1,1,n) v -q(N-1,1,e)]
 #
 
 q(N,1,e) => q(N,1,n) /\ [q(N,2,n) v q(N,2,e)] /\ [-q(N,2,n) v -q(N,2,e)]
