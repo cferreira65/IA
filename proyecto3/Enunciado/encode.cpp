@@ -51,7 +51,7 @@ int main(int argc, char const *argv[])
     in >> n;
     in >> m;
     seg = (m + 1) * n + m * (n + 1);
-    int var = n * m + seg;
+    int var = n * m + seg + (n * m) * (n * m);
     int cla = 0; 
     myfile << "p cnf " << var << ' ' << cla << '\n';
     char cel;
