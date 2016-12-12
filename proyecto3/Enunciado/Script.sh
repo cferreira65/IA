@@ -8,7 +8,7 @@ else
     do  
         L="$line"
         echo $L > arch.txt
-        #echo $L\n >> out.cnf
+        echo $L >> out.cnf
         G=${L[0]}
         echo $G
         F=${L[1]}

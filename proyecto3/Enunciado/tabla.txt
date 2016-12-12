@@ -21,3 +21,403 @@
 +----+-----+----+-----+----+-----+----+-----+----+-----+----+
 |  o |  26 |  o |  27 |  o |  28 |  o |  29 |  o |  30 |  o |
 +----+-----+----+-----+----+-----+----+-----+----+-----+----+
+
+Representación:
+
+    Las formulas de q z y r son funciones para calcular las diferentes 
+variables que usaremos para el SAT, primero tenemos los n*(m+1) segmentos
+horizontales, despues los m*(n+1) segmentos horizontales, despues de eso
+tenemos las n*m variables y por ultimo vienen las (n*m)*(n*m) variables de
+las relaciones de las casillas entre ellas.
+
+Cláusulas:
+
+    Las clásulas usadas escritas en CNF para pasarle al SAT fueron las 
+siguientes:
+
+Cláusulas tipo 0
+----------------
+
+Cada segmento interno de la retícula es referenciado por dos celdas distintas.
+Por ejemplo, el segmento vertical entre los puntos (1,1) y (1,2) corresponde
+al segmento este de la celda c(1,2) y al segmento oeste de la celda c(2,2).
+
+Para obtener una interpretación consistente debemos forzar que las dos
+proposiciones q(c,d) que refieren al mismo segmento tengan la misma
+interpretación:
+
+Para toda celda c=(i,j) con 1 <= i < N y 1 <= j <= M,
+
+q(i,j,e) <=> q(i+1,j,w)
+
+# CNF
+[q(i,j,e) => q(i+1,j,w)] /\ [q(i,j,e) <= q(i+1,j,w)]
+
+[-q(i,j,e) \/ q(i+1,j,w)] /\ [q(i,j,e) \/ -q(i+1,j,w)]
+#
+
+Para toda celda c=(i,j) con 1 <= i <= N y 1 <= j < M,
+
+q(i,j,s) <=> q(i,j+1,n)
+
+# CNF
+[q(i,j,s) <=> q(i,j+1,n)]
+
+[q(i,j,s) => q(i,j+1,n)] /\ [q(i,j,s) <= q(i,j+1,n)]
+
+[-q(i,j,s) \/ q(i,j+1,n)] /\ [q(i,j,s) \/ -q(i,j+1,n)]
+#
+
+Cláusulas tipo 1
+----------------
+
+Para cada celda c=(i,j) y etiqueta n en { 0, 1, 2, 3, 4 }, se deben
+agregar fórmulas que fuerzen la presencia de n segmentos alrededor de
+la celda c. Por ejemplo, si n = 0, se deben agregar las fórmulas:
+
+-q(i,j,n)
+-q(i,j,e)
+-q(i,j,s)
+-q(i,j,w)
+
+y si n=1, se deben agregar las fórmulas:
+
+q(i,j,n) v q(i,j,e) v q(i,j,s) v q(i,j,w)
+-q(i,j,n) v -q(i,j,e)
+-q(i,j,n) v -q(i,j,s)
+-q(i,j,n) v -q(i,j,w)
+-q(i,j,e) v -q(i,j,s)
+-q(i,j,e) v -q(i,j,w)
+-q(i,j,s) v -q(i,j,w)
+
+Si n=2, se deben agregar las formulas:
+
+[q(i,j,n) /\ q(i,j,e)] v [q(i,j,n) /\ q(i,j,s)] v [q(i,j,n) /\ q(i,j,w)] v [q(i,j,e) /\ q(i,j,s)] v [q(i,j,e) /\ q(i,j,w)] v [q(i,j,s) /\ q(i,j,w)]
+
+# CNF
+[q(i,j,n) v q(i,j,e) v q(i,j,s)] /\ [q(i,j,n) v q(i,j,e) v q(i,j,w)] /\ [q(i,j,n) v q(i,j,e) v q(i,j,w) v q(i,j,s)] /\ [q(i,j,n) v q(i,j,s) v q(i,j,w)] /\ [q(i,j,e) v q(i,j,s) v q(i,j,w)]
+#
+
+-q(i,j,n) v -q(i,j,e) v -q(i,j,s)
+-q(i,j,n) v -q(i,j,e) v -q(i,j,w)
+-q(i,j,e) v -q(i,j,s) v -q(i,j,w)
+-q(i,j,s) v -q(i,j,w) v -q(i,j,n)
+
+Si n=3, se deben agregar las formulas:
+
+[q(i,j,n) /\ q(i,j,e) /\ q(i,j,s)] v [q(i,j,e) /\ q(i,j,s) /\ q(i,j,w)] v [q(i,j,s) /\ q(i,j,w) /\ q(i,j,n)] v [q(i,j,w) /\ q(i,j,n) /\ q(i,j,e)]
+
+# CNF
+[q(i,j,n) v q(i,j,e) v q(i,j,s) v q(i,j,w)] /\ [q(i,j,n) v q(i,j,e) v q(i,j,s)] /\ [q(i,j,n) v q(i,j,e) v q(i,j,w)] /\ [q(i,j,n) v q(i,j,e)] /\ [q(i,j,n) v q(i,j,s) v q(i,j,w)] /\ [q(i,j,n) v q(i,j,s)] /\ [q(i,j,n) v q(i,j,w)] /\ [q(i,j,e) v q(i,j,s) v q(i,j,w)] /\ [q(i,j,e) v q(i,j,s)] /\ [q(i,j,e) v q(i,j,w)] /\ [q(i,j,s) v q(i,j,w)]
+#
+
+-q(i,j,n) v -q(i,j,e) v -q(i,j,s) v -q(i,j,w)
+
+Si n=4, se deben agregar las formulas:
+
+q(i,j,n)
+q(i,j,e)
+q(i,j,s)
+q(i,j,w)
+ 
+Cláusulas tipo 2
+----------------
+
+Una solución particiona las celdas en dos grupos: el grupo de celdas
+interiores al perímetro y el grupo de celdas exteriores. Debemos 
+identificar el tipo de cada celda en una solución. Para esto definimos
+símbolos z(c) para cada celda c=(i,j) que denotan cuando una celda es
+exterior (z(c)=TRUE) o interior (z(c)=FALSE). Las siguientes fórmulas
+fuerzan que los símbolos z(c) esten bien definidos en cada solución.
+
+Para cada celda c=(1,j) con 1 <= j <= M en el borde izquierdo,
+
+-q(1,j,w) <=> z(1,j)
+
+# CNF
+[-q(1,j,w) => z(1,j)] /\ [-q(1,j,w) <= z(1,j)]
+
+[q(1,j,w) v z(1,j)] /\ [-q(1,j,w) v -z(1,j)]
+#
+
+Para cada celda c=(N,j) con 1 <= j <= M en el borde derecho,
+
+-q(N,j,e) <=> z(N,j)
+
+# CNF
+[-q(N,j,e) => z(N,j)] /\ [-q(N,j,e) <= z(N,j)]
+
+[q(N,j,e) v z(N,j)] /\ [-q(N,j,e) v -z(N,j)]
+#
+
+Para cada celda c=(i,1) con 1 <= i <= N en el borde inferior,
+
+-q(i,1,n) <=> z(i,1)
+
+#CNF
+[-q(i,1,n) => z(i,1)] /\ [-q(i,1,n) <= z(i,1)]
+
+[q(i,1,n) v z(i,1)] /\ [-q(i,1,n) v -z(i,1)]
+#
+
+Para cada celda c=(i,M) con 1 <= i <= N en el borde superior,
+
+-q(i,M,s) <=> z(i,M)
+
+# CNF
+[-q(i,M,s) => z(i,M)] /\ [-q(i,M,s) <= z(i,M)]
+
+[q(i,M,s) v z(i,M)] /\ [-q(i,M,s) v -z(i,M)]
+#
+
+Para las celdas c=(i,j) con 1 < i < N y 1 < j < M, que no están
+en ningún borde, definimos:
+
+z(i,j) <=> [-q(i,j,s) & z(i,j+1)] v [-q(i,j,e) & z(i+1,j)] v [-q(i,j,n) & z(i,j-1)] v [-q(i,j,w) & z(i-1,j)]
+
+# CNF
+[-z(i,j) v -q(i,j,s) v -q(i,j,e) v -q(i,j,n) v -q(i,j,w)] /\ [-z(i,j) v -q(i,j,s) v -q(i,j,e) v -q(i,j,n) v z(i-1,j)] /\ [-z(i,j) v -q(i,j,s) v -q(i,j,e) v z(i,j-1) v -q(i,j,w)] /\ [-z(i,j) v -q(i,j,s) v -q(i,j,e) v z(i,j-1) v z(i-1,j)] /\ [-z(i,j) v -q(i,j,s) v z(i+1,j) v -q(i,j,n) v -q(i,j,w)] /\ [-z(i,j) v -q(i,j,s) v z(i+1,j) v -q(i,j,n) v z(i-1,j)] /\ [-z(i,j) v -q(i,j,s) v z(i+1,j) v z(i,j-1) v -q(i,j,w)] /\ [-z(i,j) v -q(i,j,s) v z(i+1,j) v z(i,j-1) v z(i-1,j)] /\ [-z(i,j) v z(i,j+1) v -q(i,j,e) v -q(i,j,n) v -q(i,j,w)] /\ [-z(i,j) v z(i,j+1) v -q(i,j,e) v -q(i,j,n) v z(i-1,j)] /\ [-z(i,j) v z(i,j+1) v -q(i,j,e) v z(i,j-1) v -q(i,j,w)] /\ [-z(i,j) v z(i,j+1) v -q(i,j,e) v z(i,j-1) v z(i-1,j)] /\ [-z(i,j) v z(i,j+1) v z(i+1,j) v -q(i,j,n) v -q(i,j,w)] /\ [-z(i,j) v z(i,j+1) v z(i+1,j) v -q(i,j,n) v z(i-1,j)] /\ [-z(i,j) v z(i,j+1) v z(i+1,j) v z(i,j-1) v -q(i,j,w)] /\ [-z(i,j) v z(i,j+1) v z(i+1,j) v z(i,j-1) v z(i-1,j)] /\ [q(i,j,s) v -z(i,j+1) v z(i,j)] /\ [q(i,j,e) v -z(i+1,j) v z(i,j)] /\ [q(i,j,n) v -z(i,j-1) v z(i,j)] /\ [q(i,j,w) v -z(i-1,j) v z(i,j)]
+#
+
+Cláusulas tipo 3
+----------------
+
+Tenemos que describir cuando una celda es alcanzable desde otra
+celda de forma inductiva. Utilizamos el símbolo r(c,c') para denotar
+que la celda c' es alcanzable desde la celda c. Inicialmente, toda
+celda c es alcanzable desde ella misma:
+
+r(c,c)
+
+Para el caso inductivo, definimos el alcance a partir de la adyacencia
+de las celdas y la transitividad de la relación. Por ejemplo, si la celda
+c' es alcanzable desde la celda c, y la celda c'' es adyancente a c'
+por el lado norte, entonces:
+
+r(c,c') & -q(c',n) => r(c,c'')
+
+# CNF
+-[r(c,c') & -q(c',n)] v r(c,c'')
+
+-r(c,c') v q(c',n) v r(c,c'')
+#
+
+ya que si c' es alcanzable desde c y no existe un segmento entre c' y c'',
+entonces c'' también debe ser alcanzable desde c. Similarmente definimos
+fórmulas para las otras direcciones e, s, y w.
+
+r(c,c') & -q(c',e) => r(c,c'')
+
+# CNF
+-[r(c,c') & -q(c',e)] v r(c,c'')
+
+-r(c,c') v q(c',e) v r(c,c'')
+#
+
+r(c,c') & -q(c',s) => r(c,c'')
+
+# CNF
+-[r(c,c') & -q(c',s)] v r(c,c'')
+
+-r(c,c') v q(c',s) v r(c,c'')
+#
+
+r(c,c') & -q(c',w) => r(c,c'')
+
+# CNF
+-[r(c,c') & -q(c',w)] v r(c,c'')
+
+-r(c,c') v q(c',w) v r(c,c'')
+#
+
+Cláusulas tipo 4
+----------------
+
+Finalmente, debemos que indicar que cada par de celdas interiores tienen
+que ser alcazables la una de la otra. Para cada par de celdas c y c':
+
+-z(c) & -z(c') => r(c,c')
+
+# CNF
+-[-z(c) & -z(c')] v r(c,c')
+
+z(c) v z(c') v r(c,c')
+#
+
+La teoría proposicional entonces la conforman todas las cláusulas de tipos
+0, 1, 2, 3 y 4. Para un juego de dimensión n = NxM, el número de cláusulas
+es O(n + n + n + n^2 + n^2) = O(n^2).
+
+Cláusulas tipo 5
+----------------
+
+Ponemos que si existe un segmento perteneciente a una celda interna, entonces
+debe existir un segmento adyacente por cada dos puntos de ese segmento(para 
+1<i<N y 1<j<M):
+
+q(i,j,n) => [q(i-1,j,n) v q(i-1,j,e) v q(i,j-1,w)] /\ -[q(i-1,j,n) /\ q(i-1,j,e)] /\ -[q(i-1,j,e) /\ q(i,j-1,w)] /\ -[q(i-1,j,n) /\ q(i,j-1,w)]
+
+# CNF
+-q(i,j,n) v [[q(i-1,j,n) v q(i-1,j,e) v q(i,j-1,w)] /\ [-q(i-1,j,n) v -q(i-1,j,e)] /\ [-q(i-1,j,e) v -q(i,j-1,w)] /\ [-q(i-1,j,n) v -q(i,j-1,w)]]
+
+[-q(i,j,n) v q(i-1,j,n) v q(i-1,j,e) v q(i,j-1,w)] /\ [-q(i,j,n) v -q(i-1,j,n) v -q(i-1,j,e)] /\ [-q(i,j,n) v -q(i-1,j,e) v -q(i,j-1,w)] /\ [-q(i,j,n) v -q(i-1,j,n) v -q(i,j-1,w)]
+#
+
+q(i,j,s) => [q(i-1,j,s) v q(i-1,j,e) v q(i,j+1,w)] /\ [-q(i-1,j,s) v -q(i-1,j,e)] /\ [-q(i-1,j,e) v -q(i,j+1,w)] /\ [-q(i-1,j,s) v -q(i,j+1,w)]
+
+# CNF
+[-q(i,j,s) v q(i-1,j,s) v q(i-1,j,e) v q(i,j+1,w)] /\ [-q(i,j,s) v -q(i-1,j,s) v -q(i-1,j,e)] /\ [-q(i,j,s) v -q(i-1,j,e) v -q(i,j+1,w)] /\ [-q(i,j,s) v -q(i-1,j,s) v -q(i,j+1,w)]
+#
+
+q(i,j,w) => [q(i,j-1,s) v q(i,j-1,w) v q(i-1,j,n)] /\ [-q(i,j-1,s) v -q(i,j-1,w)] /\ [-q(i,j-1,w) v -q(i-1,j,n)] /\ [-q(i,j-1,s) v -q(i-1,j,n)]
+
+# CNF
+[-q(i,j,w) v q(i,j-1,s) v q(i,j-1,w) v q(i-1,j,n)] /\ [-q(i,j,w) v -q(i,j-1,s) v -q(i,j-1,w)] /\ [-q(i,j,w) v -q(i,j-1,w) v -q(i-1,j,n)] /\ [-q(i,j,w) v -q(i,j-1,s) v -q(i-1,j,n)]
+#
+
+q(i,j,e) => [q(i,j-1,s) v q(i,j-1,e) v q(i+1,j,n)] /\ [-q(i,j-1,s) v -q(i,j-1,e)] /\ [-q(i,j-1,e) v -q(i+1,j,n)] /\ [-q(i,j-1,s) v -q(i+1,j,n)]
+
+# CNF
+[-q(i,j,e) v q(i,j-1,s) v q(i,j-1,e) v q(i+1,j,n)] /\ [-q(i,j,e) v -q(i,j-1,s) v -q(i,j-1,e)] /\ [-q(i,j,e) v -q(i,j-1,e) v -q(i+1,j,n)] /\ [-q(i,j,e) v -q(i,j-1,s) v -q(i+1,j,n)]
+#
+
+Para las esquinas hago lo mismo:
+
+# Superior Izquierda
+q(1,1,n) => q(1,1,w)
+
+# CNF
+-q(1,1,n) v q(1,1,w)
+#
+
+q(1,1,w) => q(1,1,n)
+
+# CNF
+-q(1,1,w) v q(1,1,n)
+# 
+
+# Inferior Izquierda
+q(1,M,w) => q(1,M,s) /\ [q(1,M-1,s) v q(1,M-1,w)] /\ [-q(1,M-1,s) v -q(1,M-1,w)]
+
+# CNF
+[-q(1,M,w) v q(1,M,s)] /\ [-q(1,M,w) v q(1,M-1,s) v q(1,M-1,w)] /\ [-q(1,M,w) v -q(1,M-1,s) v -q(1,M-1,w)]
+#
+
+q(1,M,s) => q(1,M,w) /\ [q(2,M,s) v q(2,M,w)] /\ [-q(2,M,s) v -q(2,M,w)]
+
+# CNF
+[-q(1,M,s) v q(1,M,w)] /\ [-q(1,M,s) v q(2,M,s) v q(2,M,w)] /\ [-q(1,M,s) v -q(2,M,s) v -q(2,M,w)]
+#
+
+#Superior derecha
+q(N,1,n) => q(N,1,e) /\ [q(N-1,1,n) v q(N-1,1,e)] /\ [-q(N-1,1,n) v -q(N-1,1,e)]
+
+# CNF
+[-q(N,1,n) v q(N,1,e)] /\ [-q(N,1,n) v q(N-1,1,n) v q(N-1,1,e)] /\ [-q(N,1,n) v -q(N-1,1,n) v -q(N-1,1,e)]
+#
+
+q(N,1,e) => q(N,1,n) /\ [q(N,2,n) v q(N,2,e)] /\ [-q(N,2,n) v -q(N,2,e)]
+
+# CNF
+[-q(N,1,e) v q(N,1,n)] /\ [-q(N,1,e) v q(N,2,n) v q(N,2,e)] /\ [-q(N,1,e) v -q(N,2,n) v -q(N,2,e)]
+#
+
+# Inferior Derecha
+q(N,M,s) => q(N,M,e) /\ [q(N-1,M,s) v q(N-1,M,e)] /\ [-q(N-1,M,s) v -q(N-1,M,e)]
+
+# CNF
+[-q(N,M,s) v q(N,M,e)] /\ [-q(N,M,s) v q(N-1,M,s) v q(N-1,M,e)] /\ [-q(N,M,s) v -q(N-1,M,s) v -q(N-1,M,e)]
+#
+
+q(N,M,e) => q(N,M,s) /\ [q(N,M-1,s) v q(N,M-1,e)] /\ [-q(N,M-1,s) v -q(N,M-1,e)]
+
+# CNF
+[-q(N,M,e) v q(N,M,s)] /\ [-q(N,M,e) v q(N,M-1,s) v q(N,M-1,e)] /\ [-q(N,M,e) v -q(N,M-1,s) v -q(N,M-1,e)]
+#
+
+Ahora procedemos a hacer los casos de bordes que no son esquinas:
+
+# Borde izquierdo(1 < j < M):
+
+q(1,j,w) => [q(1,j-1,s) v q(1,j-1,w)] /\ [-q(1,j-1,s) v -q(1,j-1,w)]
+
+q(1,j,n) => [q(1,j,w) v q(1,j-1,w)] /\ [-q(1,j,w) v -q(1,j-1,w)]
+
+q(1,j,e) => [q(1,j-1,s) v q(1,j-1,e) v q(2,j,n)] /\ [-q(1,j-1,s) v -q(1,j-1,e)] /\ [-q(1,j-1,e) v -q(2,j,n)] /\ [-q(1,j-1,s) v -q(2,j,n)]
+
+q(1,j,s) => [q(1,j,w) v q(1,j+1,w)] /\ [-q(1,j,w) v -q(1,j+1,w)]
+
+# CNF
+[-q(1,j,w) v q(1,j-1,s) v q(1,j-1,w)] /\ [-q(1,j,w) v -q(1,j-1,s) v -q(1,j-1,w)]
+
+[-q(1,j,n) v q(1,j,w) v q(1,j-1,w)] /\ [-q(1,j,n) v -q(1,j,w) v -q(1,j-1,w)]
+
+[-q(1,j,e) v q(1,j-1,s) v q(1,j-1,e) v q(2,j,n)] /\ [-q(1,j,e) v -q(1,j-1,s) v -q(1,j-1,e)] /\ [-q(1,j,e) v -q(1,j-1,e) v -q(2,j,n)] /\ [-q(1,j,e) v -q(1,j-1,s) v -q(2,j,n)]
+
+[-q(1,j,s) v q(1,j,w) v q(1,j+1,w)] /\ [-q(1,j,s) v -q(1,j,w) v -q(1,j+1,w)]
+#
+
+# Borde derecho(1 < j < M):
+
+q(N,j,e) => [q(N,j-1,s) v q(N,j-1,e)] /\ [-q(N,j-1,s) v -q(N,j-1,e)]
+
+q(N,j,n) => [q(N,j,e) v q(N,j-1,e)] /\ [q(N,j,w) v q(N-1,j,n) v q(N,j-1,w)] /\ [-q(N,j,e) v -q(N,j-1,e)] /\ [-q(N,j,w) v -q(N-1,j,n)] /\ [-q(N-1,j,n) v -q(N,j-1,w)] /\ [-q(N,j,w) v -q(N,j-1,w)]
+
+q(N,j,w) => [q(N,j-1,s) v q(N,j-1,w) v q(N-1,j,n)] /\ [-q(N,j-1,s) v -q(N,j-1,w)] /\ [-q(N,j-1,w) v -q(N-1,j,n)] /\ [-q(N,j-1,s) v -q(N-1,j,n)]
+
+q(N,j,s) => [q(N,j,e) v q(N,j+1,e)] /\ [q(N,j,w) v q(N-1,j,s) v q(N,j+1,w)] /\ [-q(N,j,e) v -q(N,j+1,e)] /\ [-q(N,j,w) v -q(N-1,j,s)] /\ [-q(N-1,j,s) v -q(N,j+1,w)] /\ [-q(N,j,w) v -q(N,j+1,w)]
+
+# CNF
+[-q(N,j,e) v q(N,j-1,s) v q(N,j-1,e)] /\ [-q(N,j,e) v -q(N,j-1,s) v -q(N,j-1,e)]
+
+[-q(N,j,n) v q(N,j,e) v q(N,j-1,e)] /\ [-q(N,j,n) v q(N,j,w) v q(N-1,j,n) v q(N,j-1,w)] /\ [-q(N,j,n) v -q(N,j,e) v -q(N,j-1,e)] /\ [-q(N,j,n) v -q(N,j,w) v -q(N-1,j,n)] /\ [-q(N,j,n) v -q(N-1,j,n) v -q(N,j-1,w)] /\ [-q(N,j,n) v -q(N,j,w) v -q(N,j-1,w)]
+
+[-q(N,j,w) v q(N,j-1,s) v q(N,j-1,w) v q(N-1,j,n)] /\ [-q(N,j,w) v -q(N,j-1,s) v -q(N,j-1,w)] /\ [-q(N,j,w) v -q(N,j-1,w) v -q(N-1,j,n)] /\ [-q(N,j,w) v -q(N,j-1,s) v -q(N-1,j,n)]
+
+[-q(N,j,s) v q(N,j,e) v q(N,j+1,e)] /\ [-q(N,j,s) v q(N,j,w) v q(N-1,j,s) v q(N,j+1,w)] /\ [-q(N,j,s) v -q(N,j,e) v -q(N,j+1,e)] /\ [-q(N,j,s) v -q(N,j,w) v -q(N-1,j,s)] /\ [-q(N,j,s) v -q(N-1,j,s) v -q(N,j+1,w)] /\ [-q(N,j,s) v -q(N,j,w) v -q(N,j+1,w)]
+#
+
+# Borde Superior(1 < i < N):
+
+q(i,1,n) => [q(i-1,1,n) v q(i-1,1,e)] /\ [-q(i-1,1,n) v -q(i-1,1,e)]
+
+q(i,1,e) => [q(i,1,n) v q(i+1,1,n)] /\ [-q(i,1,n) v -q(i+1,1,n)]
+
+q(i,1,s) => [q(i-1,1,e) v q(i-1,1,s) v q(i,2,w)] /\ [-q(i-1,1,e) v -q(i-1,1,s)] /\ [-q(i-1,1,s) v -q(i,2,w)] /\ [-q(i-1,1,e) v -q(i,2,w)]
+
+q(i,1,w) => [q(i,1,n) v q(i-1,1,n)] /\ [-q(i,1,n) v -q(i-1,1,n)]
+
+# CNF
+[-q(i,1,n) v q(i-1,1,n) v q(i-1,1,e)] /\ [-q(i,1,n) v -q(i-1,1,n) v -q(i-1,1,e)]
+
+[-q(i,1,e) v q(i,1,n) v q(i+1,1,n)] /\ [-q(i,1,e) v -q(i,1,n) v -q(i+1,1,n)]
+
+[-q(i,1,s) v q(i-1,1,e) v q(i-1,1,s) v q(i,2,w)] /\ [-q(i,1,s) v -q(i-1,1,e) v -q(i-1,1,s)] /\ [-q(i,1,s) v -q(i-1,1,s) v -q(i,2,w)] /\ [-q(i,1,s) v -q(i-1,1,e) v -q(i,2,w)]
+
+[-q(i,1,w) v q(i,1,n) v q(i-1,1,n)] /\ [-q(i,1,w) v -q(i,1,n) v -q(i-1,1,n)]
+#
+
+# Borde inferior(1 < i < N):
+
+q(i,M,s) => [q(i-1,M,s) v q(i-1,M,e)] /\ [-q(i-1,M,s) v -q(i-1,M,e)]
+
+q(i,M,w) => [q(i-1,M,s) v q(i,M,s)] /\ [q(i-1,M,n) v q(i,M-1,s) v q(i,M-1,w)] /\ [-q(i-1,M,s) v -q(i,M,s)] /\ [-q(i-1,M,n) v -q(i,M-1,s)] /\ [-q(i,M-1,s) v -q(i,M-1,w)] /\ [-q(i-1,M,n) v -q(i,M-1,w)]
+
+q(i,M,e) => [q(i,M,s) v q(i+1,M,s)] /\ [q(i,M-1,s) v q(i,M-1,e) v q(i+1,M,n)] /\ [-q(i,M,s) v -q(i+1,M,s)] /\ [-q(i,M-1,s) v -q(i,M-1,e)] /\ [-q(i,M-1,e) v -q(i+1,M,n)] /\ [-q(i,M-1,s) v -q(i+1,M,n)]
+
+q(i,M,n) => [q(i-1,M,e) v q(i-1,M,n) v q(i,M-1,w)] /\ [-q(i-1,M,e) v -q(i-1,M,n)] /\ [-q(i-1,M,n) v -q(i,M-1,w)] /\ [-q(i-1,M,e) v -q(i,M-1,w)]
+
+# CNF
+[-q(i,M,s) v q(i-1,M,s) v q(i-1,M,e)] /\ [-q(i,M,s) v -q(i-1,M,s) v -q(i-1,M,e)]
+
+[-q(i,M,w) v q(i-1,M,s) v q(i,M,s)] /\ [-q(i,M,w) v q(i-1,M,n) v q(i,M-1,s) v q(i,M-1,w)] /\ [-q(i,M,w) v -q(i-1,M,s) v -q(i,M,s)] /\ [-q(i,M,w) v -q(i-1,M,n) v -q(i,M-1,s)] /\ [-q(i,M,w) v -q(i,M-1,s) v -q(i,M-1,w)] /\ [-q(i,M,w) v -q(i-1,M,n) v -q(i,M-1,w)]
+
+[-q(i,M,e) v q(i,M,s) v q(i+1,M,s)] /\ [-q(i,M,e) v q(i,M-1,s) v q(i,M-1,e) v q(i+1,M,n)] /\ [-q(i,M,e) v -q(i,M,s) v -q(i+1,M,s)] /\ [-q(i,M,e) v -q(i,M-1,s) v -q(i,M-1,e)] /\ [-q(i,M,e) v -q(i,M-1,e) v -q(i+1,M,n)] /\ [-q(i,M,e) v -q(i,M-1,s) v -q(i+1,M,n)]
+
+[-q(i,M,n) v q(i-1,M,e) v q(i-1,M,n) v q(i,M-1,w)] /\ [-q(i,M,n) v -q(i-1,M,e) v -q(i-1,M,n)] /\ [-q(i,M,n) v -q(i-1,M,n) v -q(i,M-1,w)] /\ [-q(i,M,n) v -q(i-1,M,e) v -q(i,M-1,w)]
+#
+
+
+
+
+
