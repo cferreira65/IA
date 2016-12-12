@@ -19,6 +19,13 @@ int main(int argc, char const *argv[])
     in >> temp;
     int seg;
 
+    if (temp == "UNSAT"){
+        out << "UNSAT\n";
+        out << n << "soy n\n";
+        out << m << "soy m\n";
+        return 0;
+    }
+
     for (int j = 0 ; j < m+1 ; ++j){
         temp = "";
         for (int i = 0 ; i < n ; ++i){
@@ -50,6 +57,9 @@ int main(int argc, char const *argv[])
         out << ver[i];
     }
     out << hor[n]<< "\n";
+    out << n << "soy n\n";
+    out << m << "soy m\n";
+
     in.close();
     out.close();
     
