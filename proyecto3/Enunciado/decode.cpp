@@ -21,8 +21,7 @@ int main(int argc, char const *argv[])
 
     if (temp == "UNSAT"){
         out << "UNSAT\n";
-        out << n << "soy n\n";
-        out << m << "soy m\n";
+        
         return 0;
     }
 
@@ -57,8 +56,6 @@ int main(int argc, char const *argv[])
         out << ver[i];
     }
     out << hor[n]<< "\n";
-    out << n << "soy n\n";
-    out << m << "soy m\n";
 
     in.close();
     out.close();
