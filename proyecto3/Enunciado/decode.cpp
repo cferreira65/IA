@@ -1,3 +1,15 @@
+/*
+Inteligencia Artificial CI-5437
+Proyecto 3
+Integrantes:
+Chiseng Ng Yu               09-11245
+María Lourdes Garcia Florez 10-10264
+Carlos Ferreira             11-10323
+
+Programa usado para decodificar las salidas de las clausulas respectivas en
+formato CNF, arrojados por el sat-solver, de modo que la respuesta sea 
+presentada en el formato dentro del archivo out.txt
+*/
 #include <iostream>
 #include <stdlib.h>
 #include <iostream>
@@ -8,13 +20,13 @@ int main(int argc, char const *argv[])
 {
     ifstream in (argv[1]);
     ofstream out ;
-    out.open("out.cnf", std::ios::app);
+    out.open("out.txt", std::ios::app);
     int n = atoi(argv[2]);
     int m = atoi(argv[3]);
     out << n << ' ';
     out << m << ' ';
-    string hor[n+1]; // Arreglo de segmentos horizontales
-    string ver[m]; // Arreglo de segmentos verticales
+    string hor[m+1]; // Arreglo de segmentos horizontales
+    string ver[n]; // Arreglo de segmentos verticales
     string temp;
     in >> temp;
     int seg;
