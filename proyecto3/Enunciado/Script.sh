@@ -10,7 +10,6 @@ else
         echo $L > arch.txt
         echo $L >> out.cnf
         G=${L[0]}
-        echo $G
         F=${L[1]}
         #echo $F
         ./encode arch.txt
