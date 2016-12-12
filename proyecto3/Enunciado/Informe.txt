@@ -35,6 +35,10 @@ hacer uso de cualquier otro, que reciba las clausulas en formato CNF, con el
 mismo script anterior especificando el sat-solver deseado.
 -------------------------------------------------------------------------------
 
+    La siguiente tabla es un ejemplo de la representación que tomamos, las 'o'
+representan los puntos, los números representan los segmentos con número de 
+la variable correspondiente y las coordenadas representan las celdas.
+
 +----+-----+----+-----+----+-----+----+-----+----+-----+----+
 |  o |  1  |  o |  2  |  o |  3  |  o |  4  |  o |  5  |  o |
 +----+-----+----+-----+----+-----+----+-----+----+-----+----+
@@ -320,9 +324,10 @@ es O(n + n + n + n^2 + n^2) = O(n^2).
 Cláusulas tipo 5
 ----------------
 
-Ponemos que si existe un segmento perteneciente a una celda interna, entonces
-debe existir solo un segmento adyacente por cada dos puntos de ese segmento(para 
-1<i<N y 1<j<M):
+Para representar que en un punto solo pueden existir 0 o 2 segmentos, para hacer
+dicha representación ponemos que si existe un segmento perteneciente a una 
+celda interna, entonces debe existir solo un segmento adyacente por cada dos 
+puntos de ese segmento(para 1<i<N y 1<j<M):
 
 q(i,j,n) => [q(i-1,j,n) v q(i-1,j,e) v q(i,j-1,w)] /\ 
 			-[q(i-1,j,n) /\ q(i-1,j,e)] /\ 
