@@ -11,10 +11,11 @@ else
         echo $L >> out.cnf
         G=${L[0]}
         F=${L[1]}
-        #echo $F
         ./encode arch.txt
         $2 encode.cnf solSat.cnf
         ./decode solSat.cnf $G $F 
     done < $1 
+    rm arch.txt solSat.cnf encode.cnf
+    make clean
 fi 
 

@@ -13,15 +13,15 @@ int main(int argc, char const *argv[])
     int m = atoi(argv[3]);
     out << n << ' ';
     out << m << ' ';
-    string hor[n+1];
-    string ver[m];
+    string hor[n+1]; // Arreglo de segmentos horizontales
+    string ver[m]; // Arreglo de segmentos verticales
     string temp;
     in >> temp;
     int seg;
 
     if (temp == "UNSAT"){
         out << "UNSAT\n";
-        
+
         return 0;
     }
 
