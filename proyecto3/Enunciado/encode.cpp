@@ -103,10 +103,10 @@ int main(int argc, char const *argv[])
                     myfile << -q(i,j,'s') << ' ' << -q(i,j,'w') << " 0\n"; 
                     break;
                 case '2' :
-                    //[q(i,j,n) v q(i,j,e) v q(i,j,s)] /\ 
-                    //[q(i,j,n) v q(i,j,e) v q(i,j,w)] /\ 
-                    //[q(i,j,n) v q(i,j,e) v q(i,j,w) v q(i,j,s)] /\ 
-                    //[q(i,j,n) v q(i,j,s) v q(i,j,w)] /\ 
+                    //[q(i,j,n) v q(i,j,e) v q(i,j,s)] / 
+                    //[q(i,j,n) v q(i,j,e) v q(i,j,w)] / 
+                    //[q(i,j,n) v q(i,j,e) v q(i,j,w) v q(i,j,s)] / 
+                    //[q(i,j,n) v q(i,j,s) v q(i,j,w)] / 
                     //[q(i,j,e) v q(i,j,s) v q(i,j,w)]
                     myfile << q(i,j,'n') << ' ' << q(i,j,'e') << ' ' << q(i,j,'s') << " 0\n";
                     myfile << q(i,j,'n') << ' ' << q(i,j,'e') << ' ' << q(i,j,'w') << " 0\n";
